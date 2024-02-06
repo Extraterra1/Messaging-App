@@ -5,8 +5,7 @@ const logger = require('morgan');
 const { default: mongoose } = require('mongoose');
 const cors = require('cors');
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const apiRouter = require('./routes/api');
 const errorHandler = require('./middleware/errorHandler');
 const handle404 = require('./middleware/handle404');
 
@@ -24,8 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api', apiRouter);
 
 app.use(errorHandler);
 app.use(handle404);
