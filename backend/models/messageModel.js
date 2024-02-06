@@ -18,6 +18,10 @@ const messageModel = new Schema({
   imgUrl: {
     type: String,
     trim: true
+  },
+  chatroom: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Chatroom'
   }
 });
 
