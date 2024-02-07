@@ -7,7 +7,7 @@ const options = {
   secretOrKey: process.env.JWT_SECRET
 };
 
-const strategy = new JwtStrategy(options, async (payload, done) => {
+exports.strategy = new JwtStrategy(options, async (payload, done) => {
   try {
     const user = await User.findById(payload.sub);
 
