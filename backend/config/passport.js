@@ -1,6 +1,5 @@
 const { ExtractJwt, Strategy: JwtStrategy } = require('passport-jwt');
 const User = require('../models/userModel');
-const asyncHandler = require('express-async-handler');
 
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
