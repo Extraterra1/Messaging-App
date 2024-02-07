@@ -9,10 +9,11 @@ const apiRouter = require('./routes/api');
 const errorHandler = require('./middleware/errorHandler');
 const handle404 = require('./middleware/handle404');
 
+require('dotenv').config();
+
 const passport = require('passport');
 const { strategy } = require('./config/passport');
 
-require('dotenv').config();
 const app = express();
 
 mongoose.connect(process.env.DB_URL);

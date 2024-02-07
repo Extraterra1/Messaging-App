@@ -1,4 +1,4 @@
-import { loginPOST } from '../controllers/authController';
+const { loginPOST, registerPOST } = require('../controllers/authController');
 const express = require('express');
 const router = express.Router();
 
@@ -9,5 +9,8 @@ router.get('/', function (req, res, next) {
 
 // POST Login
 router.post('/login', loginPOST);
+
+// POST Register
+router.post('/register', registerPOST);
 
 module.exports = router;
