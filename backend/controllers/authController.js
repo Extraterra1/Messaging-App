@@ -68,3 +68,7 @@ exports.registerPOST = [
     });
   })
 ];
+
+exports.protectedRoute = (req, res) => {
+  return res.json({ msg: 'Authenticated' });
+};
