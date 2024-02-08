@@ -6,12 +6,27 @@ const moment = require('moment');
 const jwt = require('jsonwebtoken');
 
 exports.loginPOST = [
-  body('username', 'Bad request').trim().isLength({ min: 2 }).optional(),
-  body('email', 'Bad request').trim().isEmail().optional(),
+  body('username', 'Bad request').trim().isLength({ min: 2 }),
   body('password', 'Bad request').isLength({ min: 1 }),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(401).json({ err: errors.array()[0].msg });
+
+    const user = await User.findOne({
+      $or: [{ username: req.body.username }, { email: req.body.username }]
+    });
+
+    if (!user) return res.status(401).json({ err: { message: 'Wrong username/password' } });
+
+    const isValidPassword = await bcrypt.compare(req.body.password, user.password);
+    if (!isValidPassword) return res.status(401).json({ err: { message: 'Wrong username/password' } });
+
+    const cleanUser = { email: user.email, username: user.username, role: user.role, _id: user._id };
+
+    jwt.sign({ user: cleanUser, exp: moment().add(3, 'days').unix(), sub: cleanUser._id }, process.env.JWT_SECRET, (err, token) => {
+      if (err) return res.status(500).json({ err });
+      return res.json({ token, user: cleanUser });
+    });
   })
 ];
 
@@ -45,10 +60,9 @@ exports.registerPOST = [
     });
     await newUser.save();
 
-    // const cleanUser = { email: newUser.email, username: newUser.username, role: newUser.role, id: newUser._id };
-    const cleanUser = newUser.select('-password');
+    const cleanUser = { _id: newUser._id, email: newUser.email, username: newUser.username, friends: newUser.friends };
 
-    jwt.sign({ user: cleanUser, exp: moment().add(3, 'days').unix() }, process.env.JWT_SECRET, (err, token) => {
+    jwt.sign({ user: cleanUser, exp: moment().add(3, 'days').unix(), sub: cleanUser._id }, process.env.JWT_SECRET, (err, token) => {
       if (err) return res.status(500).json({ err });
       return res.json({ token, user: cleanUser });
     });

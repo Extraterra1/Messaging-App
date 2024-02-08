@@ -8,6 +8,7 @@ const options = {
 
 exports.strategy = new JwtStrategy(options, async (payload, done) => {
   try {
+    console.log(payload);
     const user = await User.findById(payload.sub);
 
     if (!user) return done(null, false);
