@@ -1,6 +1,10 @@
 const { default: mongoose, Schema } = require('mongoose');
 
 const chatroomModel = new Schema({
+  title: {
+    type: String,
+    trim: true
+  },
   participants: [
     {
       type: mongoose.Types.ObjectId,
@@ -14,7 +18,11 @@ const chatroomModel = new Schema({
       required: true,
       ref: 'Comment'
     }
-  ]
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 module.exports = mongoose.model('Chatroom', chatroomModel);
