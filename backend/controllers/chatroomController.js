@@ -3,11 +3,14 @@ const asyncHandler = require('express-async-handler');
 const { isValidObjectId } = require('mongoose');
 
 exports.create = [
-  body('participants', 'You need to pass the members of the chatrooms').isArray().isLength({ min: 2 }).withMessage('There must be at least 2 members'),
+  body('participants', 'You need to pass the members of the chatrooms')
+    .isArray()
+    .isLength({ min: 2 })
+    .withMessage('There must be at least 2 members')
+    .custom((value) => value.length === new Set(value).size)
+    .withMessage('All participants must be unique'),
   body('participants.*')
-    .custom((value) => {
-      return isValidObjectId(value);
-    })
+    .custom((value) => isValidObjectId(value))
     .withMessage('Invalid User ID'),
 
   asyncHandler(async (req, res) => {
