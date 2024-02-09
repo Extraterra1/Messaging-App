@@ -18,9 +18,16 @@ const userSchema = new Schema({
   },
   friends: [
     {
-      type: mongoose.Types.ObjectId,
-      required: true,
-      ref: 'User'
+      user: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: 'User'
+      },
+      chatroom: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: 'Chatroom'
+      }
     }
   ]
 });
