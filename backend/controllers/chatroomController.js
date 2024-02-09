@@ -2,6 +2,7 @@ const { body, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
 const { isValidObjectId } = require('mongoose');
 const Chatroom = require('../models/chatroomModel');
+const User = require('../models/userModel');
 
 exports.create = [
   body('participants', 'You need to pass the members of the chatrooms')
@@ -18,6 +19,10 @@ exports.create = [
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(401).json({ err: errors.array(), type: 'bodyValidation' });
+
+    const users = await Promise.all(req.body.participants.map((e) => User.findById(e)));
+    const userNotFound = users.findIndex((el) => el === null);
+    if (userNotFound) return res.status(500).json({ err: `The user ${req.body.participants[userNotFound]} does not exist.` });
 
     const newChatroom = new Chatroom({
       participants: req.body.participants
