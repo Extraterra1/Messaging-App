@@ -27,7 +27,7 @@ router.post('/register', authController.registerPOST);
 // CHATROOMS
 //  **************************
 
-router.post('/chatrooms', chatroomController.create);
+router.post('/chatrooms', passport.authenticate('jwt', { session: false }), chatroomController.create);
 
 router.delete('/chatrooms/:id', passport.authenticate('jwt', { session: false }), chatroomController.delete);
 

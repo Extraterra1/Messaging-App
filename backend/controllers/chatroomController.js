@@ -23,10 +23,12 @@ exports.create = [
     const users = await Promise.all(req.body.participants.map((e) => User.findById(e)));
 
     const userNotFound = users.findIndex((el) => el === null);
-    if (userNotFound) return res.status(500).json({ err: `The user ${req.body.participants[userNotFound]} does not exist.` });
+
+    if (!userNotFound) return res.status(500).json({ err: `The user ${req.body.participants[userNotFound]} does not exist.` });
 
     const newChatroom = new Chatroom({
-      participants: req.body.participants
+      participants: req.body.participants,
+      admin: req.user._id
     });
 
     if (req.body.title) newChatroom.title = req.body.title;
@@ -43,7 +45,7 @@ exports.delete = asyncHandler(async (req, res) => {
   const chatroom = await Chatroom.findById(req.params.id);
   if (!chatroom) return res.status(404).json({ err: 'Chatroom not found' });
 
-  if (req.user.username !== 'admin' && req.user._id.toString() !== chatroom.admin.toString()) return res.status(401).json({ err: 'You need to be an admin' });
+  if (req.user.username !== 'admin' && !req.user._id.equals(chatroom.admin)) return res.status(401).json({ err: 'You need to be an admin' });
 
   await Chatroom.findByIdAndDelete(req.params.id);
 
