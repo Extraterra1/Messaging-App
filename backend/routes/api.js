@@ -31,4 +31,6 @@ router.post('/chatrooms', chatroomController.create);
 
 router.delete('/chatrooms/:id', passport.authenticate('jwt', { session: false }), chatroomController.delete);
 
+router.patch('/chatrooms/:id', passport.authenticate('jwt', { session: false }), chatroomController.edit);
+
 module.exports = router;
