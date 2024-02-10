@@ -40,11 +40,12 @@ exports.create = [
 exports.delete = asyncHandler(async (req, res) => {
   if (!isValidObjectId(req.params.id)) return res.status(404).json({ err: 'Chatroom not found' });
 
-  if (req.user.username !== 'admin') return res.status(401).json({ err: 'You need to be an admin' });
-
-  const chatroom = await Chatroom.findByIdAndDelete(req.params.id);
-
+  const chatroom = await Chatroom.findById(req.params.id);
   if (!chatroom) return res.status(404).json({ err: 'Chatroom not found' });
+
+  if (req.user.username !== 'admin' && req.user._id.toString() !== chatroom.admin.toString()) return res.status(401).json({ err: 'You need to be an admin' });
+
+  await Chatroom.findByIdAndDelete(req.params.id);
 
   return res.json({ chatroom });
 });
