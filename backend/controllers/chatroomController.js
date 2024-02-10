@@ -21,6 +21,7 @@ exports.create = [
     if (!errors.isEmpty()) return res.status(401).json({ err: errors.array(), type: 'bodyValidation' });
 
     const users = await Promise.all(req.body.participants.map((e) => User.findById(e)));
+
     const userNotFound = users.findIndex((el) => el === null);
     if (userNotFound) return res.status(500).json({ err: `The user ${req.body.participants[userNotFound]} does not exist.` });
 
@@ -35,3 +36,15 @@ exports.create = [
     return res.json({ newChatroom });
   })
 ];
+
+exports.delete = asyncHandler(async (req, res) => {
+  if (!isValidObjectId(req.params.id)) return res.status(404).json({ err: 'Chatroom not found' });
+
+  if (req.user.username !== 'admin') return res.status(401).json({ err: 'You need to be an admin' });
+
+  const chatroom = await Chatroom.findByIdAndDelete(req.params.id);
+
+  if (!chatroom) return res.status(404).json({ err: 'Chatroom not found' });
+
+  return res.json({ chatroom });
+});
