@@ -22,6 +22,10 @@ const chatroomModel = new Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  admin: {
+    type: mongoose.Types.ObjectId,
+    ref: 'User'
   }
 });
 
