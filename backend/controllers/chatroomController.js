@@ -65,8 +65,24 @@ exports.edit = [
     .custom((value) => isValidObjectId(value))
     .withMessage('Invalid User ID')
     .custom(async (value) => {
-      const userIsAlreadyInChatroom = await Chatroom.find({ participants: value });
+      const userIsAlreadyInChatroom = await Chatroom.findOne({ participants: value });
       return !userIsAlreadyInChatroom;
     })
-    .withMessage((value) => `User ${value} is already in chatroom`)
+    .withMessage((value) => `User ${value} is already in chatroom`),
+
+  asyncHandler(async (req, res) => {
+    if (!isValidObjectId(req.params.id)) return res.status(404).json({ err: 'Chatroom not found' });
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(401).json({ err: errors.array(), type: 'bodyValidation' });
+
+    const chatroom = await Chatroom.findById(req.params.id);
+    if (!chatroom) return res.status(404).json({ err: 'Chatroom not found' });
+
+    if (req.user.username !== 'admin' && !req.user._id.equals(chatroom.admin)) return res.status(401).json({ err: 'You need to be an admin' });
+
+    const editedChatroom = await Chatroom.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
+    return res.json({ editedChatroom });
+  })
 ];
