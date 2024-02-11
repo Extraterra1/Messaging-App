@@ -51,3 +51,22 @@ exports.delete = asyncHandler(async (req, res) => {
 
   return res.json({ chatroom });
 });
+
+exports.edit = [
+  body('title', 'Title cannot be longer than 15 characters').optional().isLength({ max: 15 }),
+  body('participants')
+    .optional()
+    .isArray()
+    .withMessage('Participants must be an array')
+    .custom((value) => value.length === new Set(value).size)
+    .withMessage('All participants must be unique'),
+  body('participants.*')
+    .optional()
+    .custom((value) => isValidObjectId(value))
+    .withMessage('Invalid User ID')
+    .custom(async (value) => {
+      const userIsAlreadyInChatroom = await Chatroom.find({ participants: value });
+      return !userIsAlreadyInChatroom;
+    })
+    .withMessage((value) => `User ${value} is already in chatroom`)
+];
