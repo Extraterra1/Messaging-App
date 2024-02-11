@@ -64,11 +64,11 @@ exports.edit = [
     .optional()
     .custom((value) => isValidObjectId(value))
     .withMessage('Invalid User ID')
-    .custom(async (value, { req }) => {
-      const userIsAlreadyInChatroom = await Chatroom.findOne({ _id: req.params.id, participants: value });
-      if (userIsAlreadyInChatroom) throw new Error('User is already in chatroom');
+    .custom(async (value) => {
+      const userExists = await User.findById(value);
+      if (!userExists) throw new Error('User does not exist');
     })
-    .withMessage((value) => `User ${value} is already in chatroom`),
+    .withMessage((value) => `User ${value} not found`),
 
   asyncHandler(async (req, res) => {
     if (!isValidObjectId(req.params.id)) return res.status(404).json({ err: 'Chatroom not found' });
