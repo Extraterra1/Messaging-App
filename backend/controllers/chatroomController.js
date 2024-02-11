@@ -79,9 +79,13 @@ exports.edit = [
     const chatroom = await Chatroom.findById(req.params.id);
     if (!chatroom) return res.status(404).json({ err: 'Chatroom not found' });
 
+    const itemsToEdit = {};
+    if (req.body.title) itemsToEdit.title = req.body.title;
+    if (req.body.participants) itemsToEdit.$push = { participants: req.body.participants };
+
     if (req.user.username !== 'admin' && !req.user._id.equals(chatroom.admin)) return res.status(401).json({ err: 'You need to be an admin' });
 
-    const editedChatroom = await Chatroom.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const editedChatroom = await Chatroom.findByIdAndUpdate(req.params.id, itemsToEdit, { new: true });
 
     return res.json({ editedChatroom });
   })
