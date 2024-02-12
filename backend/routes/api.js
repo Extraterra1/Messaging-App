@@ -5,6 +5,7 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const chatroomController = require('../controllers/chatroomController');
 const userController = require('../controllers/userController');
+const messageController = require('../controllers/messageController');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -48,6 +49,6 @@ router.get('/users/:id/chatrooms', passport.authenticate('jwt', { session: false
 //  **************************
 
 // Create Message
-router.post('/messages', passport.authenticate('jwt', { session: false }, messageController.create));
+router.post('/messages', passport.authenticate('jwt', { session: false }), messageController.create);
 
 module.exports = router;
