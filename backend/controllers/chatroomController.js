@@ -1,8 +1,10 @@
 const { body, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
 const { isValidObjectId } = require('mongoose');
+
 const Chatroom = require('../models/chatroomModel');
 const User = require('../models/userModel');
+const Message = require('../models/messageModel');
 
 exports.create = [
   body('participants', 'You need to pass the members of the chatrooms')
@@ -46,6 +48,10 @@ exports.delete = asyncHandler(async (req, res) => {
   if (!chatroom) return res.status(404).json({ err: 'Chatroom not found' });
 
   if (req.user.username !== 'admin' && !req.user._id.equals(chatroom.admin)) return res.status(401).json({ err: 'You need to be an admin' });
+
+  const messagesToDelete = chatroom.messages.map((e) => Message.findByIdAndDelete(e));
+
+  await Promise.all(messagesToDelete);
 
   await Chatroom.findByIdAndDelete(req.params.id);
 

@@ -23,7 +23,7 @@ exports.create = [
 
     if (!chatroom.participants.includes(req.user._id)) return res.status(401).json({ err: 'You are not in that chatroom' });
 
-    const newMessage = new Message({ content: req.body.content, author: req.user._id, chatroom: req.body.author, imgUrl: req.body.imgUrl || null });
+    const newMessage = new Message({ content: req.body.content, author: req.user._id, chatroom: req.body.chatroom, imgUrl: req.body.imgUrl || null });
     await newMessage.save();
 
     await Chatroom.findByIdAndUpdate(req.body.chatroom, { $push: { messages: newMessage._id } });
