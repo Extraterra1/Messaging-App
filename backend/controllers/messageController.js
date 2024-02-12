@@ -21,6 +21,8 @@ exports.create = [
     const chatroom = await Chatroom.findById(req.body.chatroom);
     if (!chatroom) return res.status(404).json({ err: 'Chatroom not found' });
 
+    if (!chatroom.participants.includes(req.user._id)) return res.status(401).json({ err: 'You are not in that chatroom' });
+
     const newMessage = new Message({ content: req.body.content, author: req.user._id, chatroom: req.body.author, imgUrl: req.body.imgUrl || null });
     await newMessage.save();
 
