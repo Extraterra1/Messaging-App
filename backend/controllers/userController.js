@@ -12,7 +12,8 @@ exports.getChats = asyncHandler(async (req, res) => {
 
   const chatrooms = await Chatroom.find({ participants: req.params.id })
     .populate({ path: 'participants', select: '-password' })
-    .populate({ path: 'messages', populate: { path: 'author', select: '-password' } });
+    .populate({ path: 'messages', populate: { path: 'author', select: '-password' }, options: { sort: { createdAt: -1 } } })
+    .sort({ updatedAt: -1 });
 
   return res.json({ chatrooms, count: chatrooms.length });
 });
