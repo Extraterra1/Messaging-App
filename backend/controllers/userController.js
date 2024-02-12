@@ -10,11 +10,9 @@ exports.getChats = asyncHandler(async (req, res) => {
 
   if (!req.user._id.equals(req.params.id) && req.user.username !== 'admin') return res.status(401).json({ err: 'You need to be an admin to do that' });
 
-  const chatrooms = await Chatroom.find({ participants: req.params.id }).populate({
-    path: 'participants messages',
-    select: '-password',
-    populate: { path: 'author' }
-  });
+  const chatrooms = await Chatroom.find({ participants: req.params.id })
+    .populate({ path: 'participants', select: '-password' })
+    .populate({ path: 'messages', populate: { path: 'author', select: '-password' } });
 
   return res.json({ chatrooms, count: chatrooms.length });
 });
