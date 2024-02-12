@@ -8,7 +8,13 @@ const Chatroom = require('../models/chatroomModel');
 exports.getChats = asyncHandler(async (req, res) => {
   if (!isValidObjectId(req.params.id)) return res.status(404).json({ err: 'User not found' });
 
-  const chatrooms = await Chatroom.find({ participants: req.params.id }).populate({ path: 'participants', select: '-password' });
+  if (!req.user._id.equals(req.params.id) && req.user.username !== 'admin') return res.status(401).json({ err: 'You need to be an admin to do that' });
+
+  const chatrooms = await Chatroom.find({ participants: req.params.id }).populate({
+    path: 'participants messages',
+    select: '-password',
+    populate: { path: 'author' }
+  });
 
   return res.json({ chatrooms, count: chatrooms.length });
 });

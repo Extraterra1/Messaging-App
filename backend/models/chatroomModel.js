@@ -17,7 +17,7 @@ const chatroomModel = new Schema(
       {
         type: mongoose.Types.ObjectId,
         required: true,
-        ref: 'Comment'
+        ref: 'Message'
       }
     ],
     admin: {
