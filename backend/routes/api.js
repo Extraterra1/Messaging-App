@@ -43,4 +43,11 @@ router.delete('/chatrooms/:id', passport.authenticate('jwt', { session: false })
 
 router.get('/users/:id/chatrooms', passport.authenticate('jwt', { session: false }), userController.getChats);
 
+// ***************************
+// MESSAGES
+//  **************************
+
+// Create Message
+router.post('/messages', passport.authenticate('jwt', { session: false }, messageController.create));
+
 module.exports = router;
