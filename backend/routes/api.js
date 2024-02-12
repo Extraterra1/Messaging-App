@@ -4,6 +4,7 @@ const router = express.Router();
 
 const authController = require('../controllers/authController');
 const chatroomController = require('../controllers/chatroomController');
+const userController = require('../controllers/userController');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -27,10 +28,19 @@ router.post('/register', authController.registerPOST);
 // CHATROOMS
 //  **************************
 
+// Create Chatroom
 router.post('/chatrooms', passport.authenticate('jwt', { session: false }), chatroomController.create);
 
+// Update Chatroom
+router.patch('/chatrooms/:id', passport.authenticate('jwt', { session: false }), chatroomController.edit);
+
+// Delete Chatroom
 router.delete('/chatrooms/:id', passport.authenticate('jwt', { session: false }), chatroomController.delete);
 
-router.patch('/chatrooms/:id', passport.authenticate('jwt', { session: false }), chatroomController.edit);
+// ***************************
+// USERS
+//  **************************
+
+router.get('/users/:id/chatrooms', passport.authenticate('jwt', { session: false }), userController.getChats);
 
 module.exports = router;
