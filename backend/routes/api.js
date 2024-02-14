@@ -6,6 +6,7 @@ const authController = require('../controllers/authController');
 const chatroomController = require('../controllers/chatroomController');
 const userController = require('../controllers/userController');
 const messageController = require('../controllers/messageController');
+const friendRequestController = require('../controllers/friendRequestController');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -50,5 +51,11 @@ router.get('/users/:id/chatrooms', passport.authenticate('jwt', { session: false
 
 // Create Message
 router.post('/messages', passport.authenticate('jwt', { session: false }), messageController.create);
+
+// ***************************
+// FRIEND REQUESTS
+//  **************************
+
+router.post('/friendRequest', passport.authenticate('jwt', { session: false }), friendRequestController.create);
 
 module.exports = router;
