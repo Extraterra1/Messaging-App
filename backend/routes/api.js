@@ -56,6 +56,6 @@ router.post('/messages', passport.authenticate('jwt', { session: false }), messa
 // FRIEND REQUESTS
 //  **************************
 
-router.post('/friendRequest', passport.authenticate('jwt', { session: false }), friendRequestController.create);
+router.post('/friendRequests', passport.authenticate('jwt', { session: false }), friendRequestController.create);
 
 module.exports = router;
