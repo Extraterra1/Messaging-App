@@ -59,6 +59,9 @@ router.post('/messages', passport.authenticate('jwt', { session: false }), messa
 //  Send Friend Request
 router.post('/friendRequests', passport.authenticate('jwt', { session: false }), friendRequestController.create);
 
+// Accept Friend Request
+router.patch('/friendRequests/:id/accept', passport.authenticate('jwt', { session: false }), friendRequestController.accept);
+
 // Get User's pending received friend requests
 router.get('/friendRequests/:id', passport.authenticate('jwt', { session: false }), friendRequestController.getPendingRequests);
 
