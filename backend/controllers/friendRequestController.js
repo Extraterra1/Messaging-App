@@ -40,3 +40,13 @@ exports.getPendingRequests = asyncHandler(async (req, res) => {
 
   return res.json({ pendingFR });
 });
+
+exports.accept = asyncHandler(async (req, res) => {
+  if (!isValidObjectId(req.params.id)) return res.status(404).json({ err: 'Friend Request not found' });
+
+  const friendRequest = await FriendRequest.findById(req.params.id);
+  if (!friendRequest) return res.status(404).json({ err: 'Friend Request not found' });
+
+  if (!friendRequest.recipient.equals(req.user._id)) return res.status(401).json({ err: 'You are not authorized' });
+  return res.json({ user: req.user });
+});

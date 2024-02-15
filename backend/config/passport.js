@@ -8,7 +8,7 @@ const options = {
 
 exports.strategy = new JwtStrategy(options, async (payload, done) => {
   try {
-    const user = await User.findById(payload.sub);
+    const user = await User.findById(payload.sub).select('-password');
 
     if (!user) return done(null, false);
 
