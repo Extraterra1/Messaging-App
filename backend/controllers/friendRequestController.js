@@ -76,3 +76,19 @@ exports.accept = asyncHandler(async (req, res) => {
 
   return res.json({ recipient: updatedRecipient, sender: updatedSender });
 });
+
+exports.decline = asyncHandler(async (req, res) => {
+  if (!isValidObjectId(req.params.id)) return res.status(404).json({ err: 'Friend Request not found' });
+
+  const friendRequest = await FriendRequest.findById(req.params.id);
+  if (!friendRequest) return res.status(404).json({ err: 'Friend Request not found' });
+
+  if (!friendRequest.recipient.equals(req.user._id)) return res.status(401).json({ err: 'You are not authorized' });
+
+  if (friendRequest.status === 'accepted') return res.status(409).json({ err: 'Friend request has already been accepted' });
+  if (friendRequest.status === 'rejected') return res.status(409).json({ err: 'Friend request has already been rejected' });
+
+  const updatedFriendRequest = await FriendRequest.findByIdAndUpdate(req.params.id, { status: 'rejected' });
+
+  return res.json({ updatedFriendRequest });
+});
