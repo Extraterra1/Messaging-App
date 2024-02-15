@@ -19,7 +19,7 @@ exports.create = [
     const recipient = await User.findById(req.body.recipient);
     if (!recipient) return res.status(404).json({ err: 'Recipient not found' });
 
-    const alreadyFriends = recipient.friends.some((e) => e.user.equals(req.body.recipient));
+    const alreadyFriends = recipient.friends.some((e) => e.user.equals(req.user._id));
     if (alreadyFriends) return res.status(409).json({ err: 'Users are already friends' });
 
     const existingFriendRequest = await FriendRequest.findOne({ recipient: req.body.recipient, sender: req.user._id, status: 'pending' });
