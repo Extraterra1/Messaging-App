@@ -4,6 +4,7 @@ const { isValidObjectId } = require('mongoose');
 
 const User = require('../models/userModel');
 const FriendRequest = require('../models/friendRequestModel');
+const Chatroom = require('../models/chatroomModel');
 
 exports.create = [
   body('recipient', 'Invalid Recipient')
@@ -48,5 +49,30 @@ exports.accept = asyncHandler(async (req, res) => {
   if (!friendRequest) return res.status(404).json({ err: 'Friend Request not found' });
 
   if (!friendRequest.recipient.equals(req.user._id)) return res.status(401).json({ err: 'You are not authorized' });
-  return res.json({ user: req.user });
+
+  if (friendRequest.status === 'accepted') return res.status(409).json({ err: 'Friend request has already been accepted' });
+  if (friendRequest.status === 'rejected') return res.status(409).json({ err: 'Friend request has already been rejected' });
+
+  await FriendRequest.findByIdAndUpdate(req.params.id, { status: 'accepted' });
+
+  const newChatroom = new Chatroom({
+    participants: [friendRequest.recipient, friendRequest.sender]
+  });
+
+  await newChatroom.save();
+
+  const updatedRecipient = await User.findByIdAndUpdate(
+    req.user._id,
+    { $push: { friends: { user: friendRequest.sender, chatroom: newChatroom._id } } },
+    { new: true }
+  );
+  const updatedSender = await User.findByIdAndUpdate(
+    friendRequest.sender,
+    {
+      $push: { friends: { user: friendRequest.recipient, chatroom: newChatroom._id } }
+    },
+    { new: true }
+  );
+
+  return res.json({ recipient: updatedRecipient, sender: updatedSender });
 });
