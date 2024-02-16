@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 const { isValidObjectId } = require('mongoose');
 
 const Chatroom = require('../models/chatroomModel');
-// const User = require('../models/userModel');
+const User = require('../models/userModel');
 
 exports.getChats = asyncHandler(async (req, res) => {
   if (!isValidObjectId(req.params.id)) return res.status(404).json({ err: 'User not found' });
@@ -16,4 +16,25 @@ exports.getChats = asyncHandler(async (req, res) => {
     .sort({ updatedAt: -1 });
 
   return res.json({ chatrooms, count: chatrooms.length });
+});
+
+exports.deleteFriend = asyncHandler(async (req, res) => {
+  if (!isValidObjectId(req.params.id)) return res.status(404).json({ err: 'User not found' });
+  if (!isValidObjectId(req.params.friendId)) return res.status(404).json({ err: 'Friend not found' });
+
+  if (req.params.id !== req.user._id.toString()) return res.status(401).json({ err: 'Unauthorized' });
+
+  const user = req.user;
+  const friend = await User.findById(req.params.friendId);
+  if (!friend) return res.status(404).json({ err: 'Friend not found' });
+
+  const friendShip = user.friends.find((e) => e.user.toString() === req.params.friendId);
+  if (!friendShip) return res.status(404).json({ err: 'Users are not friends' });
+
+  const updatedUser = await User.findByIdAndUpdate(req.user._id, { $pull: { friends: { user: req.params.friendId } } }, { new: true });
+  const updatedFriend = await User.findByIdAndUpdate(req.params.friendId, { $pull: { friends: { user: req.user._id } } }, { new: true });
+
+  await Chatroom.findByIdAndDelete(friendShip.chatroom);
+
+  return res.json({ updatedUser, updatedFriend });
 });
