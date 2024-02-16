@@ -22,7 +22,11 @@ exports.create = [
     const alreadyFriends = recipient.friends.some((e) => e.user.equals(req.user._id));
     if (alreadyFriends) return res.status(409).json({ err: 'Users are already friends' });
 
-    const existingFriendRequest = await FriendRequest.findOne({ recipient: req.body.recipient, sender: req.user._id, status: 'pending' });
+    const existingFriendRequest = await FriendRequest.findOne({
+      recipient: { $in: [req.body.recipient, req.user._id] },
+      sender: { $in: [req.body.recipient, req.user._id] },
+      status: 'pending'
+    });
     if (existingFriendRequest) return res.status(422).json({ err: 'There is a previous pending friend request' });
 
     const newFriendRequest = new FriendRequest({ recipient: req.body.recipient, sender: req.user._id });
