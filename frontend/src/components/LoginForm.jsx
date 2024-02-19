@@ -29,7 +29,7 @@ const FormGroup = styled.div`
   flex-direction: column;
   gap: 1rem;
   margin-bottom: 2rem;
-  font-family: 'Oswald';
+  font-family: 'Montserrat';
   letter-spacing: 1px;
 
   & label {
@@ -42,8 +42,9 @@ const FormGroup = styled.div`
     border: 1px solid var(--dark);
     border-radius: 0.25rem;
     color: var(--dark);
-    font-family: 'Oswald';
-    font-weight: 300;
+    font-family: 'Montserrat';
+    font-weight: 400;
+    font-size: 1.5rem;
     min-width: 30rem;
   }
 `;
