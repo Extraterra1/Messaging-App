@@ -1,9 +1,10 @@
+import styled from 'styled-components';
+
 import LoginForm from '../components/LoginForm';
 
 const Login = () => {
   return (
     <>
-      <Header />
       <main>
         <LoginForm />
       </main>

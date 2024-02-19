@@ -95,7 +95,7 @@ const Input = ({ label, ...props }) => {
     </>
   );
 };
-UsernameInput.propTypes = {
+Input.propTypes = {
   label: PropTypes.string,
   id: PropTypes.string,
   name: PropTypes.string
