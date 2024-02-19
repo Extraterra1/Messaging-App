@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
+import Router from '../Router';
+
 WebFont.load({
   google: {
     families: ['Montserrat:300,400,700', 'Playfair Display:400,500,700']
@@ -10,6 +12,6 @@ WebFont.load({
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <h1>Hey</h1>
+    <Router />
   </React.StrictMode>
 );
