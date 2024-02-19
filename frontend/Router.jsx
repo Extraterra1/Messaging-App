@@ -1,4 +1,5 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import RequireAuth from '@auth-kit/react-router/RequireAuth';
 
 import Landing from './src/views/Landing';
 import Login from './src/views/Login';
@@ -7,7 +8,11 @@ const Router = () => {
   const router = createBrowserRouter([
     {
       path: '/',
-      element: <Landing />
+      element: (
+        <RequireAuth fallbackPath="/login">
+          <Landing />
+        </RequireAuth>
+      )
     },
     {
       path: '/login',
