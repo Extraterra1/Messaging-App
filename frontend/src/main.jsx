@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import WebFont from 'webfontloader';
 import './index.css';
 
 import Router from '../Router';
