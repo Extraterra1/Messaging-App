@@ -119,7 +119,35 @@ const LoginForm = () => {
     });
   }
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const demoLogin = async () => {
+    try {
+      toast.promise(
+        executeLogin({ data: { username: import.meta.env.VITE_DEMO_USERNAME, password: import.meta.env.VITE_DEMO_PASS } }),
+        {
+          loading: 'Logging in...',
+          success: 'Logged In! Redirecting...',
+          error: (err) => (err.response ? 'Wrong Username/Password' : 'Something went wrong')
+        },
+        {
+          style: {
+            marginTop: '3rem',
+            fontSize: '1.5rem'
+          },
+          success: {
+            duration: 3000
+          },
+          error: {
+            duration: 5000
+          },
+          id: 'loginAttempt'
+        }
+      );
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const handleSubmit = () => {
     try {
       toast.promise(
         executeLogin({ data: { username: values.username, password: values.password } }),
@@ -169,6 +197,7 @@ const LoginForm = () => {
             <Input label="Password" name="password" type="password" />
             <SubmitButton type="submit">Log In</SubmitButton>
             <RegisterLink to="/register">New to our site? Create an account</RegisterLink>
+            <RegisterLink onClick={demoLogin}>Try the demo account</RegisterLink>
           </Form>
         </FormWrapper>
       </Formik>
