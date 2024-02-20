@@ -1,5 +1,8 @@
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+
 const Landing = () => {
-  return <h1>Hey</h1>;
+  const auth = useAuthUser();
+  return <h1>Hey {auth.username}</h1>;
 };
 
 export default Landing;

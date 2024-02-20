@@ -147,7 +147,7 @@ const LoginForm = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (values, { setSubmitting }) => {
     try {
       toast.promise(
         executeLogin({ data: { username: values.username, password: values.password } }),
