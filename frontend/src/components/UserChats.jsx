@@ -17,6 +17,7 @@ const UserChats = ({ user }) => {
 
   return (
     <Container>
+      {!loading && data.chatrooms.length === 0 ? <h3>Nothing to see here...</h3> : null}
       {loading ? (
         <ClipLoader cssOverride={{ display: 'block', margin: '0 auto' }} color="var(--light)" size={75} />
       ) : (
@@ -35,4 +36,10 @@ const Container = styled.div`
   flex-direction: column;
   gap: 3rem;
   padding: 2rem 0;
+
+  & > h3 {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 2rem;
+  }
 `;
