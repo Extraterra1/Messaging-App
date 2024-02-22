@@ -25,7 +25,10 @@ const Landing = () => {
             <Icon onClick={executeLogout} className="logout-icon" styl icon="ph:sign-out-bold" />
           </div>
           <div className="chats">
-            <h1>Chats</h1>
+            <div className="chats-heading">
+              <h1>Chats</h1>
+              <Icon className="new-chat-icon" icon="ph:note-pencil-fill" />
+            </div>
             <UserChats user={auth} />
           </div>
         </Sidebar>
@@ -69,6 +72,7 @@ const Sidebar = styled.div`
     & > .logout-icon {
       font-size: 3rem;
       cursor: pointer;
+      transition: all 0.3s;
 
       &:hover {
         color: var(--danger);
@@ -82,9 +86,25 @@ const Sidebar = styled.div`
     display: flex;
     flex-direction: column;
 
-    & > h1 {
-      font-size: 5rem;
-      letter-spacing: 0.7rem;
+    & > .chats-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      & > h1 {
+        font-size: 5rem;
+        letter-spacing: 0.7rem;
+      }
+
+      & .new-chat-icon {
+        font-size: 3rem;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &:hover {
+          color: var(--success);
+        }
+      }
     }
   }
 `;
