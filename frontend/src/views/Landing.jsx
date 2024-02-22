@@ -54,6 +54,8 @@ const Content = styled.div`
 
   display: grid;
   grid-template-columns: 1fr 2fr;
+
+  overflow: hidden;
 `;
 
 const Sidebar = styled.div`
