@@ -3,6 +3,7 @@ import RequireAuth from '@auth-kit/react-router/RequireAuth';
 
 import Landing from './src/views/Landing';
 import Login from './src/views/Login';
+import Register from './src/views/Register.jsx';
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -17,6 +18,10 @@ const Router = () => {
     {
       path: '/login',
       element: <Login />
+    },
+    {
+      path: '/register',
+      element: <Register />
     }
   ]);
   return <RouterProvider router={router} />;
