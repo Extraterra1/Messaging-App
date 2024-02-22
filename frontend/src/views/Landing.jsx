@@ -2,12 +2,19 @@ import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import useSignOut from 'react-auth-kit/hooks/useSignOut';
 import { Icon } from '@iconify/react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 import UserChats from '../components/UserChats';
 
 const Landing = () => {
   const auth = useAuthUser();
   const signOut = useSignOut();
+  const navigate = useNavigate();
+
+  const executeLogout = () => {
+    signOut();
+    return navigate('/login');
+  };
 
   return (
     <StyledMain>
@@ -15,7 +22,7 @@ const Landing = () => {
         <Sidebar>
           <div className="welcome-msg">
             <h2>Welcome, {auth.username}</h2>
-            <Icon className="logout-icon" styl icon="ph:sign-out-bold" />
+            <Icon onClick={executeLogout} className="logout-icon" styl icon="ph:sign-out-bold" />
           </div>
           <div className="chats">
             <h1>Chats</h1>
