@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import useAxios from 'axios-hooks';
 import * as Yup from 'yup';
-import { Navigate, Link, useLocation } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
@@ -13,16 +13,6 @@ const FormWrapper = styled.div`
   place-items: center;
   height: 100%;
   background-color: #3e3e3e;
-
-  @media (max-width: 450px) {
-    align-items: start;
-    padding: 10rem 3rem;
-
-    & form {
-      justify-content: center;
-      grid-auto-rows: 1fr;
-    }
-  }
 `;
 
 const FormGroup = styled.div`
@@ -87,6 +77,7 @@ const formCSS = {
 
 const Input = ({ label, ...props }) => {
   const [field, meta] = useField(props);
+
   return (
     <>
       <FormGroup>
@@ -103,11 +94,10 @@ Input.propTypes = {
   name: PropTypes.string
 };
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const signIn = useSignIn();
   const isAuthenticated = useIsAuthenticated();
-  const [{ data }, executeLogin] = useAxios({ url: `${import.meta.env.VITE_API_URL}/login`, method: 'POST' }, { manual: true });
-  const location = useLocation();
+  const [{ data }, executeRegister] = useAxios({ url: `${import.meta.env.VITE_API_URL}/register`, method: 'POST' }, { manual: true });
 
   if (data) {
     signIn({
@@ -119,14 +109,14 @@ const LoginForm = () => {
     });
   }
 
-  const demoLogin = async () => {
+  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      toast.promise(
-        executeLogin({ data: { username: import.meta.env.VITE_DEMO_USERNAME, password: import.meta.env.VITE_DEMO_PASS } }),
+      await toast.promise(
+        executeRegister({ data: { username: values.username, email: values.email, password: values.password } }),
         {
-          loading: 'Logging in...',
-          success: 'Logged In! Redirecting...',
-          error: (err) => (err.response ? 'Wrong Username/Password' : 'Something went wrong')
+          loading: 'Creating Account...',
+          success: 'Account Created! Redirecting...',
+          error: 'Something went wrong'
         },
         {
           style: {
@@ -138,65 +128,54 @@ const LoginForm = () => {
           },
           error: {
             duration: 5000
-          },
-          id: 'loginAttempt'
-        }
-      );
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-
-  const handleSubmit = (values, { setSubmitting }) => {
-    try {
-      toast.promise(
-        executeLogin({ data: { username: values.username, password: values.password } }),
-        {
-          loading: 'Logging in...',
-          success: 'Logged In! Redirecting...',
-          error: (err) => (err.response ? 'Wrong Username/Password' : 'Something went wrong')
-        },
-        {
-          style: {
-            marginTop: '3rem',
-            fontSize: '1.5rem'
-          },
-          success: {
-            duration: 3000
-          },
-          error: {
-            duration: 5000
-          },
-          id: 'loginAttempt'
+          }
         }
       );
       setSubmitting(false);
     } catch (err) {
+      if (err?.response && err?.response.data.type === 'bodyValidation') {
+        const errors = {};
+        err.response.data.err.forEach((el) => {
+          errors[el.path] = el.msg;
+        });
+        setErrors(errors);
+      }
       console.log(err.message);
     }
   };
 
   return (
     <>
-      {isAuthenticated() && <Navigate to={location.state ? location.state.pathname : '/'} />}
+      {isAuthenticated() ? <Navigate to="/" /> : null}
       <Formik
         initialValues={{
           username: '',
-          password: ''
+          email: '',
+          password: '',
+          confirmPassword: ''
         }}
         validationSchema={Yup.object({
-          username: Yup.string().required('Required'),
-          password: Yup.string().required('Required')
+          username: Yup.string()
+            .required('Required')
+            .min(3, 'Username must be at least 3 characters long')
+            .max(15, 'Username must be less than 15 characters long'),
+          email: Yup.string().required('Required').email('Must be a valid email address'),
+          password: Yup.string().required('Required').min(6, 'Must be at least 6 characters long'),
+          confirmPassword: Yup.string()
+            .required('Required')
+            .min(6, 'Must be at least 6 characters long')
+            .oneOf([Yup.ref('password'), null], 'Passwords must match')
         })}
         onSubmit={handleSubmit}
       >
         <FormWrapper>
           <Form style={formCSS}>
-            <Input label="Username or Email" name="username" type="text" placeholder="johndoe@gmail.com" />
+            <Input label="Username" name="username" type="text" placeholder="JohnDoe" />
+            <Input label="Email" name="email" type="email" placeholder="johndoe@gmail.com" />
             <Input label="Password" name="password" type="password" />
-            <SubmitButton type="submit">Log In</SubmitButton>
-            <RegisterLink to="/register">New to our site? Create an account</RegisterLink>
-            <RegisterLink onClick={demoLogin}>Try the demo account</RegisterLink>
+            <Input label="Confirm Password" name="confirmPassword" type="password" />
+            <SubmitButton type="submit">Register</SubmitButton>
+            <RegisterLink to="/login">Already have an account? Log In</RegisterLink>
           </Form>
         </FormWrapper>
       </Formik>
@@ -204,4 +183,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
