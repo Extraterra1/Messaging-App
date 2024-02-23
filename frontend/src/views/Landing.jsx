@@ -22,7 +22,7 @@ const Landing = () => {
         <Sidebar>
           <div className="welcome-msg">
             <h2>Welcome, {auth.username}</h2>
-            <Icon onClick={executeLogout} className="logout-icon" styl icon="ph:sign-out-bold" />
+            <Icon onClick={executeLogout} className="logout-icon" icon="ph:sign-out-bold" />
           </div>
           <div className="chats">
             <div className="chats-heading">
@@ -32,7 +32,7 @@ const Landing = () => {
             <UserChats user={auth} />
           </div>
         </Sidebar>
-        <ChatContainer></ChatContainer>
+        <ChatContainer />
       </Content>
     </StyledMain>
   );
