@@ -3,14 +3,15 @@ import styled from 'styled-components';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { Icon } from '@iconify/react';
 import getChatroomLetter from '../utils/getChatroomLetter';
+import getChatroomTitle from '../utils/getChatroomTitle';
 
 import CircleLetter from './CircleLetter';
 
 const Chatroom = ({ chat }) => {
   const auth = useAuthUser();
 
-  // TODO: Refactor with function
   const chatLetter = getChatroomLetter(chat, auth);
+  const chatTitle = getChatroomTitle(chat, auth);
 
   return (
     <>
@@ -21,7 +22,7 @@ const Chatroom = ({ chat }) => {
           <div className="chat-header">
             <CircleLetter>{chatLetter}</CircleLetter>
             <div className="chat-title">
-              <span>Chat with yo mama</span>
+              <span>{chatTitle}</span>
             </div>
             <div className="chat-actions">
               <Icon icon="ph:dots-three-outline-vertical-fill" />
