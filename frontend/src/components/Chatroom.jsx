@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { Icon } from '@iconify/react';
+import getChatroomLetter from '../utils/getChatroomLetter';
 
 import CircleLetter from './CircleLetter';
 
@@ -9,14 +10,7 @@ const Chatroom = ({ chat }) => {
   const auth = useAuthUser();
 
   // TODO: Refactor with function
-  const chatLetter = chat
-    ? chat.title
-      ? chat.title.at(0)
-      : chat.participants
-          .filter((e) => e._id !== auth._id)[0]
-          .username.at(0)
-          .toUpperCase()
-    : null;
+  const chatLetter = getChatroomLetter(chat, auth);
 
   return (
     <>
