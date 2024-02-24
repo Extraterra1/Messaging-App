@@ -14,8 +14,6 @@ const UserChats = ({ user, setActiveChatroom }) => {
     headers: { Authorization: authHeader }
   });
 
-  if (data) console.log(data);
-
   return (
     <Container>
       {!loading && data.chatrooms.length === 0 ? <h3>Nothing to see here...</h3> : null}
