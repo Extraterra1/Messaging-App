@@ -3,13 +3,16 @@ import useSignOut from 'react-auth-kit/hooks/useSignOut';
 import { Icon } from '@iconify/react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 import UserChats from '../components/UserChats';
+import Chatroom from '../components/Chatroom';
 
 const Landing = () => {
   const auth = useAuthUser();
   const signOut = useSignOut();
   const navigate = useNavigate();
+  const [activeChatroom, setActiveChatroom] = useState(null);
 
   const executeLogout = () => {
     signOut();
@@ -32,7 +35,9 @@ const Landing = () => {
             <UserChats user={auth} />
           </div>
         </Sidebar>
-        <ChatContainer />
+        <ChatContainer>
+          <Chatroom chat={activeChat} />
+        </ChatContainer>
       </Content>
     </StyledMain>
   );
