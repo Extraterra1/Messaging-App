@@ -22,7 +22,7 @@ const UserChats = ({ user, setActiveChatroom }) => {
       {loading ? (
         <ClipLoader cssOverride={{ display: 'block', margin: '0 auto' }} color="var(--light)" size={75} />
       ) : (
-        data.chatrooms.map((e) => <ChatPreview key={e._id} chatroom={e} />)
+        data.chatrooms.map((e) => <ChatPreview setActiveChatroom={setActiveChatroom} key={e._id} chatroom={e} />)
       )}
     </Container>
   );

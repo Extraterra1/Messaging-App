@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import PropTypes from 'prop-types';
 
 import CircleLetter from './CircleLetter';
 
-const ChatPreview = ({ chatroom }) => {
+const ChatPreview = ({ chatroom, setActiveChatroom }) => {
   const auth = useAuthUser();
   const chatLetter = chatroom.title
     ? chatroom.title.at(0)
@@ -18,7 +19,7 @@ const ChatPreview = ({ chatroom }) => {
   ) : null;
 
   return (
-    <Container>
+    <Container onClick={() => setActiveChatroom(chatroom)}>
       <CircleLetter>{chatLetter}</CircleLetter>
       <Content>
         <div className="title">{chatroom.title || chatroom.participants.filter((e) => e._id !== auth._id)[0].username}</div>
@@ -26,6 +27,11 @@ const ChatPreview = ({ chatroom }) => {
       </Content>
     </Container>
   );
+};
+
+ChatPreview.propTypes = {
+  chatroom: PropTypes.object,
+  setActiveChatroom: PropTypes.func
 };
 
 export default ChatPreview;

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 const Chatroom = ({ chat }) => {
-  return <h1>hey</h1>;
+  return <h1>{JSON.stringify(chat)}</h1>;
 };
 
 Chatroom.propTypes = {
