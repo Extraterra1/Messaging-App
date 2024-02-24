@@ -7,9 +7,9 @@ export default (chatroom, user) => {
   if (chatroom.participants.length === 2) return `Chat with ${participantsWithoutUser[0].username}`;
 
   const usernamesList = participantsWithoutUser.reduce((acc, val, i) => {
-    if (i !== participantsWithoutUser.length - 1) return acc + `${val.username},`;
-    return acc + val.username;
-  });
+    if (i !== participantsWithoutUser.length - 1) return acc.concat(`${val.username}, `);
+    return acc.concat(val.username);
+  }, '');
 
   return `Chat with ${usernamesList}`;
 };
