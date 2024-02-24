@@ -32,11 +32,11 @@ const Landing = () => {
               <h1>Chats</h1>
               <Icon className="new-chat-icon" icon="ph:note-pencil-fill" />
             </div>
-            <UserChats user={auth} />
+            <UserChats setActiveChatroom={setActiveChatroom} user={auth} />
           </div>
         </Sidebar>
         <ChatContainer>
-          <Chatroom chat={activeChat} />
+          <Chatroom chat={activeChatroom} />
         </ChatContainer>
       </Content>
     </StyledMain>
