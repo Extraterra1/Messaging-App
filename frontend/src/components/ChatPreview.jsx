@@ -1,17 +1,15 @@
 import styled from 'styled-components';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import PropTypes from 'prop-types';
+import getChatroomLetter from '../utils/getChatroomLetter';
+import getChatroomTitle from '../utils/getChatroomTitle';
 
 import CircleLetter from './CircleLetter';
 
 const ChatPreview = ({ chatroom, setActiveChatroom }) => {
   const auth = useAuthUser();
-  const chatLetter = chatroom.title
-    ? chatroom.title.at(0)
-    : chatroom.participants
-        .filter((e) => e._id !== auth._id)[0]
-        .username.at(0)
-        .toUpperCase();
+  const chatLetter = getChatroomLetter(chatroom, auth);
+  const chatTitle = getChatroomTitle(chatroom, auth);
   const lastMessage = chatroom.messages[0] ? (
     <span>
       {chatroom.messages[0].author.username}: {chatroom.messages[0].content}
@@ -22,7 +20,7 @@ const ChatPreview = ({ chatroom, setActiveChatroom }) => {
     <Container onClick={() => setActiveChatroom(chatroom)}>
       <CircleLetter>{chatLetter}</CircleLetter>
       <Content>
-        <div className="title">{chatroom.title || chatroom.participants.filter((e) => e._id !== auth._id)[0].username}</div>
+        <div className="title">{chatTitle}</div>
         <div className="last-message">{lastMessage || 'No messages here yet...'}</div>
       </Content>
     </Container>
