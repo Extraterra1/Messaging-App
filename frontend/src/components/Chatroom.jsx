@@ -7,6 +7,7 @@ import getChatroomTitle from '../utils/getChatroomTitle';
 
 import CircleLetter from './CircleLetter';
 import ChatBubble from './ChatBubble';
+import ChatForm from './ChatForm';
 
 const Chatroom = ({ chat }) => {
   const auth = useAuthUser();
@@ -34,7 +35,7 @@ const Chatroom = ({ chat }) => {
               <ChatBubble direction={e.author._id.toString() === auth._id.toString() ? 'right' : 'left'} key={e._id} message={e} />
             ))}
           </div>
-          <div className="chat-form">Form</div>
+          <ChatForm />
         </ChatroomContainer>
       )}
     </>
