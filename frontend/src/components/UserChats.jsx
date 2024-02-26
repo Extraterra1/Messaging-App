@@ -1,32 +1,17 @@
 import ClipLoader from 'react-spinners/ClipLoader';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import useAxios from 'axios-hooks';
-import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
-import { useEffect } from 'react';
 
 import ChatPreview from './ChatPreview';
 
-const UserChats = ({ setActiveChatroom, user, setChatrooms }) => {
-  const authHeader = useAuthHeader();
-
-  const [{ data, loading }] = useAxios({
-    url: `${import.meta.env.VITE_API_URL}/users/${user._id}/chatrooms`,
-    method: 'GET',
-    headers: { Authorization: authHeader }
-  });
-
-  useEffect(() => {
-    setChatrooms(data?.chatrooms);
-  }, [data]);
-
+const UserChats = ({ setActiveChatroom, loading, chatrooms }) => {
   return (
     <Container>
-      {!loading && data.chatrooms.length === 0 ? <h3>Nothing to see here...</h3> : null}
+      {!loading && chatrooms.length === 0 ? <h3>Nothing to see here...</h3> : null}
       {loading ? (
         <ClipLoader cssOverride={{ display: 'block', margin: '0 auto' }} color="var(--light)" size={75} />
       ) : (
-        data.chatrooms.map((e) => <ChatPreview setActiveChatroom={setActiveChatroom} key={e._id} chatroom={e} />)
+        chatrooms.map((e) => <ChatPreview setActiveChatroom={setActiveChatroom} key={e._id} chatroom={e} />)
       )}
     </Container>
   );
@@ -35,7 +20,9 @@ const UserChats = ({ setActiveChatroom, user, setChatrooms }) => {
 UserChats.propTypes = {
   setActiveChatroom: PropTypes.func,
   user: PropTypes.object,
-  setChatrooms: PropTypes.func
+  setChatrooms: PropTypes.func,
+  chatrooms: PropTypes.array,
+  loading: PropTypes.bool
 };
 
 export default UserChats;

@@ -3,7 +3,10 @@ import useSignOut from 'react-auth-kit/hooks/useSignOut';
 import { Icon } from '@iconify/react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import useAxios from 'axios-hooks';
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 
 import UserChats from '../components/UserChats';
 import Chatroom from '../components/Chatroom';
@@ -13,10 +16,20 @@ const Landing = () => {
   const signOut = useSignOut();
   const navigate = useNavigate();
 
+  const authHeader = useAuthHeader();
+
+  const [{ data, loading }] = useAxios({
+    url: `${import.meta.env.VITE_API_URL}/users/${auth._id}/chatrooms`,
+    method: 'GET',
+    headers: { Authorization: authHeader }
+  });
+
+  useEffect(() => {
+    if (data?.chatrooms) setChatrooms(data.chatrooms);
+  }, [data]);
+
   const [activeChatroom, setActiveChatroom] = useState(null);
   const [chatrooms, setChatrooms] = useState([]);
-
-  console.log(chatrooms);
 
   const executeLogout = () => {
     signOut();
@@ -36,7 +49,7 @@ const Landing = () => {
               <h1>Chats</h1>
               <Icon className="new-chat-icon" icon="ph:note-pencil-fill" />
             </div>
-            <UserChats setActiveChatroom={setActiveChatroom} user={auth} setChatrooms={setChatrooms} />
+            <UserChats setActiveChatroom={setActiveChatroom} user={auth} setChatrooms={setChatrooms} chatrooms={chatrooms} loading={loading} />
           </div>
         </Sidebar>
         <ChatContainer>
