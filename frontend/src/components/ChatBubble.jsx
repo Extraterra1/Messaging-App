@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import Color from 'color';
 
 const ChatBubble = ({ message, direction }) => {
   if (direction === 'left') return <Bubble $left>{message.content}</Bubble>;
@@ -34,6 +35,6 @@ const Bubble = styled.div`
     radial-gradient(var(--t) at var(--_d) 0, #0000 98%, #000 102%) var(--_d) 100% / calc(100% - var(--r)) var(--t) no-repeat,
     conic-gradient(at var(--r) var(--r), #000 75%, #0000 0) calc(var(--r) / -2) calc(var(--r) / -2) padding-box,
     radial-gradient(50% 50%, #000 98%, #0000 101%) 0 0 / var(--r) var(--r) space padding-box;
-  background: linear-gradient(135deg, #fe6d00, #1384c5) border-box;
+  background: ${Color('#11273d').lighten(1.5).hex()} border-box;
   color: #fff;
 `;
