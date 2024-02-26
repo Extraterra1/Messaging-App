@@ -12,13 +12,13 @@ const ChatPreview = ({ chatroom, setActiveChatroom, chatrooms }) => {
   const chatTitle = getChatroomTitle(chatroom, auth);
   const lastMessage = chatroom.messages[0] ? (
     <span>
-      {chatroom.messages[0].author.username}: {chatroom.messages[0].content}
+      {chatroom.messages[0].author.username}:{' '}
+      {chatroom.messages[0].content.length > 25 ? chatroom.messages[0].content.slice(0, 25).trim() + '...' : chatroom.messages[0].content}
     </span>
   ) : null;
 
   const handleClick = () => {
     const index = chatrooms.findIndex((e) => e._id.toString() === chatroom._id.toString());
-
     setActiveChatroom(index);
   };
 
