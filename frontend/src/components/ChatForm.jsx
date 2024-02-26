@@ -6,10 +6,12 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import Color from 'color';
 import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { BeatLoader } from 'react-spinners';
 
-const ChatForm = ({ chatId }) => {
+const ChatForm = ({ chatId, setMessages }) => {
   const authHeader = useAuthHeader();
+  const auth = useAuthUser();
 
   const [{ loading }, sendMessage] = useAxios(
     { url: `${import.meta.env.VITE_API_URL}/messages`, method: 'POST', headers: { Authorization: authHeader } },
@@ -18,9 +20,10 @@ const ChatForm = ({ chatId }) => {
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      await sendMessage({ data: { chatroom: chatId, content: values.content } });
+      const res = await sendMessage({ data: { chatroom: chatId, content: values.content } });
       setSubmitting(false);
       resetForm();
+      setMessages((messages) => [{ ...res.data, author: auth }, ...messages]);
     } catch (err) {
       console.log(err);
     }
@@ -52,7 +55,8 @@ const ChatForm = ({ chatId }) => {
 };
 
 ChatForm.propTypes = {
-  chatId: PropTypes.string
+  chatId: PropTypes.string,
+  setMessages: PropTypes.func
 };
 
 export default ChatForm;

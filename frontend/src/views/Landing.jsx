@@ -12,7 +12,11 @@ const Landing = () => {
   const auth = useAuthUser();
   const signOut = useSignOut();
   const navigate = useNavigate();
+
   const [activeChatroom, setActiveChatroom] = useState(null);
+  const [chatrooms, setChatrooms] = useState([]);
+
+  console.log(chatrooms);
 
   const executeLogout = () => {
     signOut();
@@ -32,7 +36,7 @@ const Landing = () => {
               <h1>Chats</h1>
               <Icon className="new-chat-icon" icon="ph:note-pencil-fill" />
             </div>
-            <UserChats setActiveChatroom={setActiveChatroom} user={auth} />
+            <UserChats setActiveChatroom={setActiveChatroom} user={auth} setChatrooms={setChatrooms} />
           </div>
         </Sidebar>
         <ChatContainer>

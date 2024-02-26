@@ -1,18 +1,24 @@
-import useAxios from 'axios-hooks';
-import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 import ClipLoader from 'react-spinners/ClipLoader';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import useAxios from 'axios-hooks';
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
+import { useEffect } from 'react';
 
 import ChatPreview from './ChatPreview';
 
-const UserChats = ({ user, setActiveChatroom }) => {
+const UserChats = ({ setActiveChatroom, user, setChatrooms }) => {
   const authHeader = useAuthHeader();
+
   const [{ data, loading }] = useAxios({
     url: `${import.meta.env.VITE_API_URL}/users/${user._id}/chatrooms`,
     method: 'GET',
     headers: { Authorization: authHeader }
   });
+
+  useEffect(() => {
+    setChatrooms(data?.chatrooms);
+  }, [data]);
 
   return (
     <Container>
@@ -27,8 +33,9 @@ const UserChats = ({ user, setActiveChatroom }) => {
 };
 
 UserChats.propTypes = {
+  setActiveChatroom: PropTypes.func,
   user: PropTypes.object,
-  setActiveChatroom: PropTypes.func
+  setChatrooms: PropTypes.func
 };
 
 export default UserChats;

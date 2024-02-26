@@ -4,40 +4,40 @@ import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { Icon } from '@iconify/react';
 import getChatroomLetter from '../utils/getChatroomLetter';
 import getChatroomTitle from '../utils/getChatroomTitle';
+import { useState } from 'react';
 
 import CircleLetter from './CircleLetter';
 import ChatBubble from './ChatBubble';
 import ChatForm from './ChatForm';
 
 const Chatroom = ({ chat }) => {
+  if (!chat) return <EmptyMessage />;
+
   const auth = useAuthUser();
+  const [messages, setMessages] = useState(chat.messages);
 
   const chatLetter = getChatroomLetter(chat, auth);
   const chatTitle = getChatroomTitle(chat, auth);
 
   return (
     <>
-      {!chat ? (
-        <EmptyMessage />
-      ) : (
-        <ChatroomContainer>
-          <div className="chat-header">
-            <CircleLetter>{chatLetter}</CircleLetter>
-            <div className="chat-title">
-              <span>{chatTitle}</span>
-            </div>
-            <div className="chat-actions">
-              <Icon icon="ph:dots-three-outline-vertical-fill" />
-            </div>
+      <ChatroomContainer>
+        <div className="chat-header">
+          <CircleLetter>{chatLetter}</CircleLetter>
+          <div className="chat-title">
+            <span>{chatTitle}</span>
           </div>
-          <div className="chat-body">
-            {chat.messages.map((e) => (
-              <ChatBubble direction={e.author._id.toString() === auth._id.toString() ? 'right' : 'left'} key={e._id} message={e} />
-            ))}
+          <div className="chat-actions">
+            <Icon icon="ph:dots-three-outline-vertical-fill" />
           </div>
-          <ChatForm chatId={chat._id.toString()} />
-        </ChatroomContainer>
-      )}
+        </div>
+        <div className="chat-body">
+          {messages.map((e) => (
+            <ChatBubble direction={e.author._id.toString() === auth._id.toString() ? 'right' : 'left'} key={e._id} message={e} />
+          ))}
+        </div>
+        <ChatForm setMessages={setMessages} chatId={chat._id.toString()} />
+      </ChatroomContainer>
     </>
   );
 };
