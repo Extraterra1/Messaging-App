@@ -6,11 +6,12 @@ import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import Color from 'color';
 import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
+import { BeatLoader } from 'react-spinners';
 
 const ChatForm = ({ chatId }) => {
   const authHeader = useAuthHeader();
 
-  const [{ data }, sendMessage] = useAxios(
+  const [{ loading }, sendMessage] = useAxios(
     { url: `${import.meta.env.VITE_API_URL}/messages`, method: 'POST', headers: { Authorization: authHeader } },
     { manual: true }
   );
@@ -38,7 +39,11 @@ const ChatForm = ({ chatId }) => {
         <Form style={formCSS}>
           <Input name="content" type="text" placeholder="Type your message..." />
           <SubmitButton type="submit">
-            <Icon icon="ph:paper-plane-right-fill" />
+            {loading ? (
+              <BeatLoader loading={loading} cssOverride={{ display: 'block', margin: '0 auto' }} color="var(--light)" size={5} />
+            ) : (
+              <Icon icon="ph:paper-plane-right-fill" />
+            )}
           </SubmitButton>
         </Form>
       </Formik>
