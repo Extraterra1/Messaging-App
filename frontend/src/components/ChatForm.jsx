@@ -5,10 +5,25 @@ import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { Icon } from '@iconify/react';
 import Color from 'color';
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 
-const ChatForm = () => {
-  const handleSubmit = () => console.log('submit');
+const ChatForm = ({ chatId }) => {
+  const authHeader = useAuthHeader();
 
+  const [{ data }, sendMessage] = useAxios(
+    { url: `${import.meta.env.VITE_API_URL}/messages`, method: 'POST', headers: { Authorization: authHeader } },
+    { manual: true }
+  );
+
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    try {
+      await sendMessage({ data: { chatroom: chatId, content: values.content } });
+      setSubmitting(false);
+      resetForm();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <FormWrapper>
       <Formik
@@ -29,6 +44,10 @@ const ChatForm = () => {
       </Formik>
     </FormWrapper>
   );
+};
+
+ChatForm.propTypes = {
+  chatId: PropTypes.string
 };
 
 export default ChatForm;

@@ -35,7 +35,7 @@ const Chatroom = ({ chat }) => {
               <ChatBubble direction={e.author._id.toString() === auth._id.toString() ? 'right' : 'left'} key={e._id} message={e} />
             ))}
           </div>
-          <ChatForm />
+          <ChatForm chatId={chat._id.toString()} />
         </ChatroomContainer>
       )}
     </>
