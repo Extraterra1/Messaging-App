@@ -31,6 +31,10 @@ const Landing = () => {
   const [activeChatroom, setActiveChatroom] = useState(null);
   const [chatrooms, setChatrooms] = useState([]);
 
+  useEffect(() => {
+    if (activeChatroom !== null) setActiveChatroom(0);
+  }, [chatrooms]);
+
   const executeLogout = () => {
     signOut();
     return navigate('/login');
@@ -53,7 +57,7 @@ const Landing = () => {
           </div>
         </Sidebar>
         <ChatContainer>
-          <Chatroom chat={chatrooms[activeChatroom]} setChatrooms={setChatrooms} />
+          <Chatroom chat={chatrooms[activeChatroom]} setChatrooms={setChatrooms} setActiveChatroom={setActiveChatroom} />
         </ChatContainer>
       </Content>
     </StyledMain>
