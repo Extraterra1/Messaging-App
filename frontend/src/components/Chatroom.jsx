@@ -50,6 +50,7 @@ export default Chatroom;
 const ChatroomContainer = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   & > .chat-header {
     display: flex;
@@ -82,6 +83,17 @@ const ChatroomContainer = styled.div`
         background-color: var(--gray);
       }
     }
+  }
+
+  .chat-body {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: end;
+    flex-grow: 1;
+
+    gap: 2rem;
+    padding: 1rem;
+    font-size: 1.7rem;
   }
 `;
 
