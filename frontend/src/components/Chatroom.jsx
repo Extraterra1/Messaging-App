@@ -4,17 +4,15 @@ import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { Icon } from '@iconify/react';
 import getChatroomLetter from '../utils/getChatroomLetter';
 import getChatroomTitle from '../utils/getChatroomTitle';
-import { useState } from 'react';
 
 import CircleLetter from './CircleLetter';
 import ChatBubble from './ChatBubble';
 import ChatForm from './ChatForm';
 
-const Chatroom = ({ chat }) => {
+const Chatroom = ({ chat, setChatrooms }) => {
   if (!chat) return <EmptyMessage />;
 
   const auth = useAuthUser();
-  const [messages, setMessages] = useState(chat.messages);
 
   const chatLetter = getChatroomLetter(chat, auth);
   const chatTitle = getChatroomTitle(chat, auth);
@@ -32,18 +30,19 @@ const Chatroom = ({ chat }) => {
           </div>
         </div>
         <div className="chat-body">
-          {messages.map((e) => (
+          {chat.messages.map((e) => (
             <ChatBubble direction={e.author._id.toString() === auth._id.toString() ? 'right' : 'left'} key={e._id} message={e} />
           ))}
         </div>
-        <ChatForm setMessages={setMessages} chatId={chat._id.toString()} />
+        <ChatForm setChatrooms={setChatrooms} chatId={chat._id.toString()} />
       </ChatroomContainer>
     </>
   );
 };
 
 Chatroom.propTypes = {
-  chat: PropTypes.object
+  chat: PropTypes.object,
+  setChatrooms: PropTypes.func
 };
 
 export default Chatroom;

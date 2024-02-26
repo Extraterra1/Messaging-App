@@ -9,7 +9,7 @@ import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { BeatLoader } from 'react-spinners';
 
-const ChatForm = ({ chatId, setMessages }) => {
+const ChatForm = ({ chatId, setChatrooms }) => {
   const authHeader = useAuthHeader();
   const auth = useAuthUser();
 
@@ -23,11 +23,22 @@ const ChatForm = ({ chatId, setMessages }) => {
       const res = await sendMessage({ data: { chatroom: chatId, content: values.content } });
       setSubmitting(false);
       resetForm();
-      setMessages((messages) => [{ ...res.data, author: auth }, ...messages]);
+      setChatrooms((chatrooms) =>
+        chatrooms.reduce((acc, val) => {
+          if (val._id.toString() !== chatId) {
+            acc.push(val);
+          } else {
+            acc.push({ ...val, messages: [{ ...res.data, author: auth }, ...val.messages] });
+          }
+          return acc;
+        }, [])
+      );
     } catch (err) {
       console.log(err);
     }
   };
+
+  //   { ...res.data, author: auth }
   return (
     <FormWrapper>
       <Formik
@@ -56,7 +67,7 @@ const ChatForm = ({ chatId, setMessages }) => {
 
 ChatForm.propTypes = {
   chatId: PropTypes.string,
-  setMessages: PropTypes.func
+  setChatrooms: PropTypes.func
 };
 
 export default ChatForm;

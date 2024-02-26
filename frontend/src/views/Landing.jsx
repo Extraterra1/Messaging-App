@@ -49,11 +49,11 @@ const Landing = () => {
               <h1>Chats</h1>
               <Icon className="new-chat-icon" icon="ph:note-pencil-fill" />
             </div>
-            <UserChats setActiveChatroom={setActiveChatroom} user={auth} setChatrooms={setChatrooms} chatrooms={chatrooms} loading={loading} />
+            <UserChats setActiveChatroom={setActiveChatroom} chatrooms={chatrooms} loading={loading} />
           </div>
         </Sidebar>
         <ChatContainer>
-          <Chatroom chat={chatrooms[activeChatroom]} />
+          <Chatroom chat={chatrooms[activeChatroom]} setChatrooms={setChatrooms} />
         </ChatContainer>
       </Content>
     </StyledMain>
