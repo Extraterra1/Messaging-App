@@ -28,7 +28,7 @@ const ChatForm = ({ chatId, setChatrooms }) => {
           if (val._id.toString() !== chatId) {
             acc.push(val);
           } else {
-            acc.push({ ...val, messages: [{ ...res.data, author: auth }, ...val.messages] });
+            acc.unshift({ ...val, messages: [{ ...res.data, author: auth }, ...val.messages] });
           }
           return acc;
         }, [])
