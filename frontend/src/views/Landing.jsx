@@ -53,7 +53,7 @@ const Landing = () => {
           </div>
         </Sidebar>
         <ChatContainer>
-          <Chatroom chat={activeChatroom} />
+          <Chatroom chat={chatrooms[activeChatroom]} />
         </ChatContainer>
       </Content>
     </StyledMain>

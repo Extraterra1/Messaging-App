@@ -6,7 +6,7 @@ import getChatroomTitle from '../utils/getChatroomTitle';
 
 import CircleLetter from './CircleLetter';
 
-const ChatPreview = ({ chatroom, setActiveChatroom }) => {
+const ChatPreview = ({ chatroom, setActiveChatroom, chatrooms }) => {
   const auth = useAuthUser();
   const chatLetter = getChatroomLetter(chatroom, auth);
   const chatTitle = getChatroomTitle(chatroom, auth);
@@ -16,8 +16,14 @@ const ChatPreview = ({ chatroom, setActiveChatroom }) => {
     </span>
   ) : null;
 
+  const handleClick = () => {
+    const index = chatrooms.findIndex((e) => e._id.toString() === chatroom._id.toString());
+
+    setActiveChatroom(index);
+  };
+
   return (
-    <Container onClick={() => setActiveChatroom(chatroom)}>
+    <Container onClick={handleClick}>
       <CircleLetter>{chatLetter}</CircleLetter>
       <Content>
         <div className="title">{chatTitle}</div>
@@ -29,7 +35,8 @@ const ChatPreview = ({ chatroom, setActiveChatroom }) => {
 
 ChatPreview.propTypes = {
   chatroom: PropTypes.object,
-  setActiveChatroom: PropTypes.func
+  setActiveChatroom: PropTypes.func,
+  chatrooms: PropTypes.array
 };
 
 export default ChatPreview;

@@ -11,7 +11,7 @@ const UserChats = ({ setActiveChatroom, loading, chatrooms }) => {
       {loading ? (
         <ClipLoader cssOverride={{ display: 'block', margin: '0 auto' }} color="var(--light)" size={75} />
       ) : (
-        chatrooms.map((e) => <ChatPreview setActiveChatroom={setActiveChatroom} key={e._id} chatroom={e} />)
+        chatrooms.map((e) => <ChatPreview chatrooms={chatrooms} setActiveChatroom={setActiveChatroom} key={e._id} chatroom={e} />)
       )}
     </Container>
   );
@@ -19,8 +19,6 @@ const UserChats = ({ setActiveChatroom, loading, chatrooms }) => {
 
 UserChats.propTypes = {
   setActiveChatroom: PropTypes.func,
-  user: PropTypes.object,
-  setChatrooms: PropTypes.func,
   chatrooms: PropTypes.array,
   loading: PropTypes.bool
 };
