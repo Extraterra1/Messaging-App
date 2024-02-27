@@ -81,6 +81,7 @@ const formCSS = {
 
 const FormWrapper = styled.div`
   padding: 1rem;
+  height: 10rem;
 `;
 
 const SubmitButton = styled.button`

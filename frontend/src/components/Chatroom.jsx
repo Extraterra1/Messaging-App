@@ -51,6 +51,7 @@ const ChatroomContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow-y: auto;
 
   & > .chat-header {
     display: flex;
@@ -60,6 +61,8 @@ const ChatroomContainer = styled.div`
 
     align-items: center;
     justify-content: space-between;
+
+    height: 10rem;
 
     & > .chat-title {
       flex-grow: 1;
@@ -89,11 +92,17 @@ const ChatroomContainer = styled.div`
     display: flex;
     flex-direction: column-reverse;
     justify-content: end;
-    flex-grow: 1;
+
+    /* Height of main container is 100vh minus the container padding(5rem) */
+    /* Then we subtract the height of the header and input box (10rem each) */
+    /* finally the padding of the chatroom container (1rem) */
+    height: calc((100vh - 5rem) - 20rem - 1rem);
 
     gap: 2rem;
     padding: 1rem;
     font-size: 1.7rem;
+
+    overflow-y: auto;
   }
 `;
 

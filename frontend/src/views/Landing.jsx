@@ -70,6 +70,7 @@ const StyledMain = styled.main`
   padding: 5rem;
   background-color: #2ab67b;
   color: var(--light);
+  height: 100vh;
 `;
 
 const Content = styled.div`
@@ -80,6 +81,8 @@ const Content = styled.div`
 
   display: grid;
   grid-template-columns: 1fr 2fr;
+
+  height: calc(100vh-5rem);
 
   overflow: hidden;
 `;
