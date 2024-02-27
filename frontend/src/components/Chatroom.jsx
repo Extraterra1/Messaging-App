@@ -62,7 +62,7 @@ const ChatroomContainer = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    height: 10rem;
+    height: 8rem;
 
     & > .chat-title {
       flex-grow: 1;
@@ -94,15 +94,30 @@ const ChatroomContainer = styled.div`
     justify-content: end;
 
     /* Height of main container is 100vh minus the container padding(5rem) */
-    /* Then we subtract the height of the header and input box (10rem each) */
+    /* Then we subtract the height of the header and input box (8rem and 10rem ) */
     /* finally the padding of the chatroom container (1rem) */
-    height: calc((100vh - 5rem) - 20rem - 1rem);
+    height: calc((100vh - 5rem) - 18rem - 1rem);
 
     gap: 2rem;
     padding: 1rem;
     font-size: 1.7rem;
 
     overflow-y: auto;
+
+    &::-webkit-scrollbar-track {
+      border-radius: 5px;
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar {
+      width: 12px;
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background-color: #555;
+    }
   }
 `;
 
