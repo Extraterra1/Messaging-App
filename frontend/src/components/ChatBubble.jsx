@@ -1,10 +1,22 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Color from 'color';
+import moment from 'moment';
 
 const ChatBubble = ({ message, direction }) => {
-  if (direction === 'left') return <Bubble $left>{message.content}</Bubble>;
-  return <Bubble>{message.content}</Bubble>;
+  if (direction === 'left')
+    return (
+      <Bubble $left>
+        {message.content}
+        <span>{moment(message.createdAt).format('MMM DD, HH:mm')}</span>
+      </Bubble>
+    );
+  return (
+    <Bubble>
+      {message.content}
+      <span>{moment(message.createdAt).format('MMM DD, HH:mm')}</span>
+    </Bubble>
+  );
 };
 
 ChatBubble.propTypes = {
@@ -25,6 +37,7 @@ const Bubble = styled.div`
   margin-left: ${(props) => (props.$left ? 'inherit' : 'var(--t)')};
   place-self: ${(props) => (props.$left ? 'start' : 'end')};
 
+  min-width: 10rem;
   max-width: 300px;
   padding: calc(2 * var(--r) / 2.5);
   mask:
@@ -37,4 +50,13 @@ const Bubble = styled.div`
     radial-gradient(50% 50%, #000 98%, #0000 101%) 0 0 / var(--r) var(--r) space padding-box;
   background: ${(props) => (props.$left ? 'var(--dark-hover)' : Color('#11273d').lighten(1.5).hex())} border-box;
   color: #fff;
+
+  position: relative;
+
+  & > span {
+    position: absolute;
+    bottom: 0;
+    right: 0.8rem;
+    font-size: 0.8rem;
+  }
 `;
