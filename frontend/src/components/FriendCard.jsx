@@ -7,12 +7,13 @@ import CircleLetter from './CircleLetter';
 
 const FriendCard = ({ user }) => {
   const auth = useAuthUser();
+  const alreadyFriends = user.friends.some((e) => e.user === auth._id);
 
   return (
     <Container>
-      <CircleLetter>{user.username.at(0)}</CircleLetter>
+      <CircleLetter>{user.username.at(0).toUpperCase()}</CircleLetter>
       <span className="username">{user.username}</span>
-      <Icon className="add-friend-icon icon" icon="ph:user-plus-fill" />
+      <Icon className={`add-friend-icon icon ${alreadyFriends && 'friends'}`} icon="ph:user-plus-fill" />
     </Container>
   );
 };
@@ -41,6 +42,19 @@ const Container = styled.div`
     font-size: 3rem;
     cursor: pointer;
     transition: all 0.3s;
+
+    &:hover {
+      color: var(--info);
+    }
+  }
+
+  & > .friends {
+    color: var(--gray);
+    cursor: auto;
+
+    &:hover {
+      color: var(--gray);
+    }
   }
 `;
 

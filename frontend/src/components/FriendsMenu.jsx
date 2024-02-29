@@ -35,7 +35,7 @@ const FriendsMenu = ({ isOpen, closeModal }) => {
     <div style={{ position: 'absolute' }} onClick={(e) => e.stopPropagation()}>
       <Modal isOpen={isOpen} onRequestClose={closeModal} style={modalStyles}>
         <ModalContainer>
-          <h1>Add new Friends</h1>
+          <h1>Find New Friends</h1>
           <div className="form">
             <Formik
               initialValues={{
