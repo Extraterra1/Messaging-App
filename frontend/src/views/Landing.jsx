@@ -30,6 +30,7 @@ const Landing = () => {
 
   const [activeChatroom, setActiveChatroom] = useState(null);
   const [chatrooms, setChatrooms] = useState([]);
+  const [showingActions, setShowingActions] = useState(false);
 
   useEffect(() => {
     if (activeChatroom !== null) setActiveChatroom(0);
@@ -51,7 +52,10 @@ const Landing = () => {
           <div className="chats">
             <div className="chats-heading">
               <h1>Chats</h1>
-              <Icon className="new-chat-icon" icon="ph:note-pencil-fill" />
+              <div>
+                <Icon className="new-chat-icon icon" icon="ph:note-pencil-fill" />
+                <Icon onClick={() => setShowingActions(!showingActions)} className="more-icon icon" icon="ph:dots-three-outline-vertical-fill" />
+              </div>
             </div>
             <UserChats setActiveChatroom={setActiveChatroom} chatrooms={chatrooms} loading={loading} />
           </div>
@@ -122,19 +126,27 @@ const Sidebar = styled.div`
       justify-content: space-between;
       align-items: center;
 
+      & > div {
+        display: flex;
+        gap: 2rem;
+      }
+
       & > h1 {
         font-size: 5rem;
         letter-spacing: 0.7rem;
       }
 
-      & .new-chat-icon {
+      & .icon {
         font-size: 3rem;
         cursor: pointer;
-        transition: all 0.3s;
+        transition: all 0.1s;
+      }
 
-        &:hover {
-          color: var(--success);
-        }
+      & .new-chat-icon:hover {
+        color: var(--success);
+      }
+      & .more-icon:hover {
+        color: var(--gray-light);
       }
     }
   }
