@@ -4,8 +4,33 @@ import styled from 'styled-components';
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
 import { Icon } from '@iconify/react';
+import useAxios from 'axios-hooks';
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
+import { ClipLoader } from 'react-spinners';
+
+import UsersList from './UsersList';
 
 const FriendsMenu = ({ isOpen, closeModal }) => {
+  const authHeader = useAuthHeader();
+
+  const [{ loading, data }, executeSearch] = useAxios(
+    {
+      url: `${import.meta.env.VITE_API_URL}/users/search`,
+      method: 'POST',
+      headers: { Authorization: authHeader }
+    },
+    { manual: true }
+  );
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      await executeSearch({ data: { username: values.username } });
+      setSubmitting(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div style={{ position: 'absolute' }} onClick={(e) => e.stopPropagation()}>
       <Modal isOpen={isOpen} onRequestClose={closeModal} style={modalStyles}>
@@ -19,12 +44,16 @@ const FriendsMenu = ({ isOpen, closeModal }) => {
               validationSchema={Yup.object({
                 username: Yup.string().required('Required')
               })}
-              onSubmit={() => console.log('xd')}
+              onSubmit={handleSubmit}
             >
               <Form>
                 <Input label="Username" name="username" id="username" type="text" placeholder="XxVampireSlayerxX" />
               </Form>
             </Formik>
+          </div>
+          <div className="body">
+            <ClipLoader cssOverride={{ margin: '0 auto', alignSelf: 'center', display: 'inline-block' }} loading={loading} color="var(--dark)" size={75} />
+            {!loading ? <UsersList data={data} /> : null}
           </div>
         </ModalContainer>
       </Modal>
@@ -42,7 +71,7 @@ FriendsMenu.propTypes = {
 const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
   padding: 3rem;
   min-height: 50vh;
   & h1 {
@@ -51,11 +80,11 @@ const ModalContainer = styled.div`
     font-size: 4rem;
     letter-spacing: 3px;
   }
-  & .actions {
-    margin: 0 auto;
-    margin-top: 5rem;
+  & > .body {
+    flex-grow: 1;
+
     display: flex;
-    gap: 5rem;
+    justify-content: center;
   }
 `;
 
