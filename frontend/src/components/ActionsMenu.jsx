@@ -1,14 +1,22 @@
 import styled from 'styled-components';
 import { Icon } from '@iconify/react';
+import { useState } from 'react';
+
+import FriendsMenu from './FriendsMenu';
 
 const ActionsMenu = () => {
+  const [friendsMenuOpen, setFriendsMenuOpen] = useState(false);
+
   return (
-    <Container onClick={(e) => e.stopPropagation()}>
-      <div>
-        <Icon icon="ph:user-circle-plus-fill" />
-        <span>Add Friend</span>
-      </div>
-    </Container>
+    <>
+      <FriendsMenu isOpen={friendsMenuOpen} closeModal={() => setFriendsMenuOpen(false)} />
+      <Container onClick={(e) => e.stopPropagation()}>
+        <div onClick={() => setFriendsMenuOpen(true)}>
+          <Icon icon="ph:user-circle-plus-fill" />
+          <span>Add Friend</span>
+        </div>
+      </Container>
+    </>
   );
 };
 
