@@ -42,10 +42,14 @@ const Landing = () => {
     return navigate('/login');
   };
 
+  const closeActionsMenu = () => {
+    if (showingActions) setShowingActions(false);
+  };
+
   return (
     <StyledMain>
       <Content>
-        <Sidebar>
+        <Sidebar onClick={closeActionsMenu}>
           <div className="welcome-msg">
             <h2>Welcome, {auth.username}</h2>
             <Icon onClick={executeLogout} className="logout-icon" icon="ph:sign-out-bold" />
