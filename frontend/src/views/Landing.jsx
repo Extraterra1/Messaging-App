@@ -60,7 +60,7 @@ const Landing = () => {
               <div>
                 <Icon className="new-chat-icon icon" icon="ph:note-pencil-fill" />
                 <Icon onClick={() => setShowingActions(!showingActions)} className="more-icon icon" icon="ph:dots-three-outline-vertical-fill" />
-                {showingActions && <ActionsMenu setShowingActions={setShowingActions} />}
+                {showingActions && <ActionsMenu />}
               </div>
             </div>
             <UserChats setActiveChatroom={setActiveChatroom} chatrooms={chatrooms} loading={loading} />
