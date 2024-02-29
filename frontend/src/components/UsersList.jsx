@@ -1,8 +1,14 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
+import FriendCard from './FriendCard';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+
 const UsersList = ({ data }) => {
-  const users = data?.users || [];
+  const auth = useAuthUser();
+
+  const users = data?.users.filter((e) => e._id !== auth._id) || [];
+
   return (
     <Container>
       {!data ? <Message>Try typing something into the search box!</Message> : null}
@@ -23,6 +29,7 @@ UsersList.propTypes = {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 const Message = styled.span`
