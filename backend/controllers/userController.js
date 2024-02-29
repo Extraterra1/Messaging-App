@@ -46,7 +46,7 @@ exports.findUsers = [
     if (!errors.isEmpty()) return res.status(401).json({ err: errors.array(), type: 'bodyValidation' });
 
     const users = await User.find({ username: { $regex: req.body.username, $options: 'i' } })
-      .select('-password, -friends')
+      .select('-password')
       .limit(10);
 
     return res.json({ users, count: users.length });
