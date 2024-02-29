@@ -8,13 +8,13 @@ const ChatBubble = ({ message, direction }) => {
     return (
       <Bubble $left>
         {message.content}
-        <span>{moment(message.createdAt).format('MMM DD, HH:mm')}</span>
+        <span>{moment(message.createdAt).format('HH:mm')}</span>
       </Bubble>
     );
   return (
     <Bubble>
       {message.content}
-      <span>{moment(message.createdAt).format('MMM DD, HH:mm')}</span>
+      <span>{moment(message.createdAt).format('HH:mm')}</span>
     </Bubble>
   );
 };
@@ -37,7 +37,9 @@ const Bubble = styled.div`
   margin-left: ${(props) => (props.$left ? 'inherit' : 'var(--t)')};
   place-self: ${(props) => (props.$left ? 'start' : 'end')};
 
-  min-width: 10rem;
+  text-align: ${(props) => (props.$left ? 'left' : 'right')};
+
+  /* min-width: 10rem; */
   max-width: 300px;
   padding: calc(2 * var(--r) / 2.5);
   mask:
