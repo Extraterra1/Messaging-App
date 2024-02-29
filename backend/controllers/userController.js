@@ -1,4 +1,4 @@
-// const { body, validationResult } = require('express-validator');
+const { body, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
 const { isValidObjectId } = require('mongoose');
 
@@ -38,3 +38,17 @@ exports.deleteFriend = asyncHandler(async (req, res) => {
 
   return res.json({ updatedUser, updatedFriend });
 });
+
+exports.findUsers = [
+  body('username', 'Username cannot be empty').notEmpty(),
+  asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(401).json({ err: errors.array(), type: 'bodyValidation' });
+
+    const users = await User.find({ username: { $regex: req.body.username, $options: 'i' } })
+      .select('-password, -friends')
+      .limit(10);
+
+    return res.json({ users, count: users.length });
+  })
+];
