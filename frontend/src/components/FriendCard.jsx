@@ -13,6 +13,7 @@ import CircleLetter from './CircleLetter';
 const FriendCard = ({ user }) => {
   const auth = useAuthUser();
   const alreadyFriends = user.friends.some((e) => e.user === auth._id);
+  const [frSent, setFRSent] = useState(false);
   const authHeader = useAuthHeader();
 
   const [{ loading, data }, sendFriendRequest] = useAxios(
@@ -20,13 +21,22 @@ const FriendCard = ({ user }) => {
     { manual: true }
   );
 
-  const handleClick = () => {
-    if (alreadyFriends) return;
-    toast.promise(sendFriendRequest({ data: { recipient: user._id } }), {
-      loading: 'Sending Friend Request...',
-      success: 'Friend Request Sent!',
-      error: 'Something Went Wrong...'
-    });
+  const handleClick = async () => {
+    try {
+      if (alreadyFriends || frSent) return;
+      await toast.promise(
+        sendFriendRequest({ data: { recipient: user._id } }),
+        {
+          loading: 'Sending Friend Request...',
+          success: 'Friend Request Sent!',
+          error: (err) => (err.response && err.response.status === 422 ? 'There is a pending friend request' : 'Something went wrong')
+        },
+        { success: { duration: 5000 }, id: 'frSent' }
+      );
+      setFRSent(true);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -34,7 +44,11 @@ const FriendCard = ({ user }) => {
       <CircleLetter>{user.username.at(0).toUpperCase()}</CircleLetter>
       <span className="username">{user.username}</span>
       {!loading ? (
-        <Icon onClick={handleClick} className={`add-friend-icon icon ${alreadyFriends && 'friends'}`} icon={data ? 'ph:check-bold' : 'ph:user-plus-fill'} />
+        <Icon
+          onClick={handleClick}
+          className={`add-friend-icon icon ${alreadyFriends && 'friends'} ${frSent && 'fr-sent'}`}
+          icon={data ? 'ph:check-bold' : 'ph:user-plus-fill'}
+        />
       ) : null}
       <BeatLoader loading={loading} color="var(--light)" size={5} />
     </Container>
@@ -77,6 +91,15 @@ const Container = styled.div`
 
     &:hover {
       color: var(--gray);
+    }
+  }
+
+  & > .fr-sent {
+    color: var(--success);
+    cursor: auto;
+
+    &:hover {
+      color: var(--success);
     }
   }
 `;
