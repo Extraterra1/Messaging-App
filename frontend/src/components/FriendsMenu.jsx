@@ -24,7 +24,7 @@ const FriendsMenu = ({ isOpen, closeModal }) => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      await executeSearch({ data: { username: values.username } });
+      await executeSearch({ data: { username: values.username.trim() } });
       setSubmitting(false);
     } catch (err) {
       console.log(err);
