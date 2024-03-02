@@ -70,8 +70,11 @@ const Landing = () => {
               <h1>Chats</h1>
               <div>
                 <Icon className="new-chat-icon icon" icon="ph:note-pencil-fill" />
-                <Icon onClick={() => setShowingActions(!showingActions)} className="more-icon icon" icon="ph:dots-three-outline-vertical-fill" />
-                <span>{friendRequests.length || null}</span>
+                <div className="actions-menu">
+                  <Icon onClick={() => setShowingActions(!showingActions)} className="more-icon icon" icon="ph:dots-three-outline-vertical-fill" />
+                  <span>{friendRequests.length || null}</span>
+                </div>
+
                 {showingActions && <ActionsMenu friendRequests={friendRequests} setFriendRequests={setFriendRequests} />}
               </div>
             </div>
@@ -149,6 +152,27 @@ const Sidebar = styled.div`
         gap: 2rem;
 
         position: relative;
+
+        & > .actions-menu {
+          position: relative;
+
+          & > span {
+            position: absolute;
+            top: -1rem;
+            left: 2rem;
+
+            display: grid;
+            place-items: center;
+            aspect-ratio: 1/1;
+            font-size: 1rem;
+            border-radius: 50%;
+            background-color: var(--light);
+            min-width: 3ch;
+            color: var(--dark);
+            background-color: var(--info);
+            font-weight: 700;
+          }
+        }
       }
 
       & > h1 {
