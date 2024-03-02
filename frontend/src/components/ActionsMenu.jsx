@@ -11,6 +11,10 @@ const ActionsMenu = () => {
     <>
       <FriendsMenu isOpen={friendsMenuOpen} closeModal={() => setFriendsMenuOpen(false)} />
       <Container onClick={(e) => e.stopPropagation()}>
+        <div>
+          <Icon icon="ph:users-fill" />
+          <span>Friend Requests</span>
+        </div>
         <div onClick={() => setFriendsMenuOpen(true)}>
           <Icon icon="ph:user-circle-plus-fill" />
           <span>Add Friend</span>
