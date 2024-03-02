@@ -12,9 +12,10 @@ const ActionsMenu = ({ friendRequests, setFriendRequests }) => {
     <>
       <FriendsMenu isOpen={friendsMenuOpen} closeModal={() => setFriendsMenuOpen(false)} />
       <Container onClick={(e) => e.stopPropagation()}>
-        <div>
+        <div className="friend-requests">
           <Icon icon="ph:users-fill" />
           <span>Friend Requests</span>
+          {friendRequests.length > 0 ? <span className="fr-notification" /> : null}
         </div>
         <div onClick={() => setFriendsMenuOpen(true)}>
           <Icon icon="ph:user-circle-plus-fill" />
@@ -60,6 +61,23 @@ const Container = styled.div`
 
     &:hover {
       background-color: var(--gray-light);
+    }
+  }
+
+  & > .friend-requests {
+    position: relative;
+
+    & > span.fr-notification {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+
+      display: grid;
+      place-items: center;
+      width: 1.5rem;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      background-color: var(--danger);
     }
   }
 `;
