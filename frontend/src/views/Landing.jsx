@@ -72,7 +72,7 @@ const Landing = () => {
                 <Icon className="new-chat-icon icon" icon="ph:note-pencil-fill" />
                 <div className="actions-menu">
                   <Icon onClick={() => setShowingActions(!showingActions)} className="more-icon icon" icon="ph:dots-three-outline-vertical-fill" />
-                  <span>{friendRequests.length || null}</span>
+                  {friendRequests.length > 0 ? <span>{friendRequests.length || null}</span> : null}
                 </div>
 
                 {showingActions && <ActionsMenu friendRequests={friendRequests} setFriendRequests={setFriendRequests} />}
