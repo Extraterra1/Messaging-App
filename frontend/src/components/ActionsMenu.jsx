@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import FriendsMenu from './FriendsMenu';
 
-const ActionsMenu = () => {
+const ActionsMenu = ({ friendRequests, setFriendRequests }) => {
   const [friendsMenuOpen, setFriendsMenuOpen] = useState(false);
 
   return (
@@ -22,6 +23,11 @@ const ActionsMenu = () => {
       </Container>
     </>
   );
+};
+
+ActionsMenu.propTypes = {
+  friendRequests: PropTypes.array,
+  setFriendRequests: PropTypes.func
 };
 
 export default ActionsMenu;

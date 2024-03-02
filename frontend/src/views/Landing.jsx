@@ -29,9 +29,20 @@ const Landing = () => {
     if (data?.chatrooms) setChatrooms(data.chatrooms);
   }, [data]);
 
+  const [{ data: frData }] = useAxios({
+    url: `${import.meta.env.VITE_API_URL}/friendRequests/${auth._id}`,
+    method: 'GET',
+    headers: { Authorization: authHeader }
+  });
+
+  useEffect(() => {
+    if (frData?.pendingFR) setFriendRequests(frData.pendingFR);
+  }, [frData]);
+
   const [activeChatroom, setActiveChatroom] = useState(null);
   const [chatrooms, setChatrooms] = useState([]);
   const [showingActions, setShowingActions] = useState(false);
+  const [friendRequests, setFriendRequests] = useState([]);
 
   useEffect(() => {
     if (activeChatroom !== null) setActiveChatroom(0);
@@ -60,7 +71,8 @@ const Landing = () => {
               <div>
                 <Icon className="new-chat-icon icon" icon="ph:note-pencil-fill" />
                 <Icon onClick={() => setShowingActions(!showingActions)} className="more-icon icon" icon="ph:dots-three-outline-vertical-fill" />
-                {showingActions && <ActionsMenu />}
+                <span>{friendRequests.length || null}</span>
+                {showingActions && <ActionsMenu friendRequests={friendRequests} setFriendRequests={setFriendRequests} />}
               </div>
             </div>
             <UserChats setActiveChatroom={setActiveChatroom} chatrooms={chatrooms} loading={loading} />
