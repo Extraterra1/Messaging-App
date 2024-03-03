@@ -166,10 +166,9 @@ const Sidebar = styled.div`
             aspect-ratio: 1/1;
             font-size: 1rem;
             border-radius: 50%;
-            background-color: var(--light);
             min-width: 3ch;
-            color: var(--dark);
-            background-color: var(--info);
+            color: var(--light);
+            background-color: var(--danger);
             font-weight: 700;
           }
         }
