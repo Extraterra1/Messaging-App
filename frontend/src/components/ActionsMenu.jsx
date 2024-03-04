@@ -7,12 +7,14 @@ import FriendsMenu from './FriendsMenu';
 
 const ActionsMenu = ({ friendRequests, setFriendRequests }) => {
   const [friendsMenuOpen, setFriendsMenuOpen] = useState(false);
+  const [frMenuOpen, setFRMenuOpen] = useState(false);
 
   return (
     <>
       <FriendsMenu isOpen={friendsMenuOpen} closeModal={() => setFriendsMenuOpen(false)} />
+      <FriendRequestMenu isOpen={frMenuOpen} closeModal={() => setFRMenuOpen(false)} />
       <Container onClick={(e) => e.stopPropagation()}>
-        <div className="friend-requests">
+        <div onClick={() => setFRMenuOpen(true)} className="friend-requests">
           <Icon icon="ph:users-fill" />
           <span>Friend Requests</span>
           {friendRequests.length > 0 ? <span className="fr-notification" /> : null}
