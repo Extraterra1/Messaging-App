@@ -3,13 +3,16 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import useAxios from 'axios-hooks';
 import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import { ClipLoader } from 'react-spinners';
 
 const FriendRequestMenu = ({ isOpen, closeModal }) => {
   const authHeader = useAuthHeader();
+  const auth = useAuthUser();
 
   const [{ loading, data }] = useAxios({
-    url: `${import.meta.env.VITE_API_URL}/users/search`,
-    method: 'POST',
+    url: `${import.meta.env.VITE_API_URL}/friendRequests/${auth._id}`,
+    method: 'GET',
     headers: { Authorization: authHeader }
   });
 
@@ -18,7 +21,16 @@ const FriendRequestMenu = ({ isOpen, closeModal }) => {
       <Modal isOpen={isOpen} onRequestClose={closeModal} style={modalStyles}>
         <ModalContainer>
           <h1>Pending Friend Requests</h1>
-          <div className="body" />
+          <div className="body">
+            <ClipLoader cssOverride={{ margin: '0 auto', alignSelf: 'center', display: 'inline-block' }} loading={loading} color="var(--dark)" size={75} />
+            {data && !loading
+              ? data.pendingFR.map((e) => (
+                  <span key={e._id}>
+                    {e.sender.username} to {e.recipient.username}
+                  </span>
+                ))
+              : null}
+          </div>
         </ModalContainer>
       </Modal>
     </div>
