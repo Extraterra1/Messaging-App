@@ -75,7 +75,7 @@ const Landing = () => {
                   {friendRequests.length > 0 ? <span>{friendRequests.length || null}</span> : null}
                 </div>
 
-                {showingActions && <ActionsMenu friendRequests={friendRequests} setFriendRequests={setFriendRequests} />}
+                {showingActions && <ActionsMenu friendRequests={friendRequests} setFriendRequests={setFriendRequests} setChatrooms={setChatrooms} />}
               </div>
             </div>
             <UserChats setActiveChatroom={setActiveChatroom} chatrooms={chatrooms} loading={loading} />

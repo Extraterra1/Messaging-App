@@ -1,31 +1,20 @@
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import useAxios from 'axios-hooks';
-import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
-import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
-import { ClipLoader } from 'react-spinners';
 
 import FriendRequestCard from './FriendRequestCard';
 
-const FriendRequestMenu = ({ isOpen, closeModal }) => {
-  const authHeader = useAuthHeader();
-  const auth = useAuthUser();
-
-  const [{ loading, data }] = useAxios({
-    url: `${import.meta.env.VITE_API_URL}/friendRequests/${auth._id}`,
-    method: 'GET',
-    headers: { Authorization: authHeader }
-  });
-
+const FriendRequestMenu = ({ isOpen, closeModal, setChatrooms, friendRequests, setFriendRequests }) => {
   return (
     <div style={{ position: 'absolute' }} onClick={(e) => e.stopPropagation()}>
       <Modal isOpen={isOpen} onRequestClose={closeModal} style={modalStyles}>
         <ModalContainer>
           <h1>Pending Friend Requests</h1>
           <div className="body">
-            <ClipLoader cssOverride={{ margin: '0 auto', alignSelf: 'center', display: 'inline-block' }} loading={loading} color="var(--dark)" size={75} />
-            {data && !loading ? data.pendingFR.map((e) => <FriendRequestCard key={e._id} friendRequest={e} />) : null}
+            {friendRequests.map((e) => (
+              <FriendRequestCard key={e._id} friendRequest={e} setChatrooms={setChatrooms} setFriendRequests={setFriendRequests} />
+            ))}
+            {friendRequests.length === 0 ? <EmptyMessage>Nothing to see here...</EmptyMessage> : null}
           </div>
         </ModalContainer>
       </Modal>
@@ -35,7 +24,10 @@ const FriendRequestMenu = ({ isOpen, closeModal }) => {
 
 FriendRequestMenu.propTypes = {
   isOpen: PropTypes.bool,
-  closeModal: PropTypes.func
+  closeModal: PropTypes.func,
+  setChatrooms: PropTypes.func,
+  setFriendRequests: PropTypes.func,
+  friendRequests: PropTypes.array
 };
 
 const ModalContainer = styled.div`
@@ -71,5 +63,11 @@ const modalStyles = {
 };
 
 Modal.setAppElement('#root');
+
+const EmptyMessage = styled.span`
+  font-size: 2rem;
+  color: var(--dark);
+  text-align: center;
+`;
 
 export default FriendRequestMenu;

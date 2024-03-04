@@ -10,19 +10,19 @@ import { useState } from 'react';
 
 import CircleLetter from './CircleLetter';
 
-const FriendRequestCard = ({ friendRequest }) => {
+const FriendRequestCard = ({ friendRequest, setChatrooms, setFriendRequests }) => {
   const auth = useAuthUser();
   const [status, setStatus] = useState('pending');
   const authHeader = useAuthHeader();
 
   const user = friendRequest.recipient.username === auth.username ? friendRequest.sender : friendRequest.recipient;
 
-  const [{ loading, data }, resolveFriendRequest] = useAxios({ method: 'PATCH', headers: { Authorization: authHeader } }, { manual: true });
+  const [{ loading }, resolveFriendRequest] = useAxios({ method: 'PATCH', headers: { Authorization: authHeader } }, { manual: true });
 
   const handleAccept = async () => {
     try {
       if (status !== 'pending') return;
-      await toast.promise(
+      const res = await toast.promise(
         resolveFriendRequest({ url: `${import.meta.env.VITE_API_URL}/friendRequests/${friendRequest._id}/accept` }),
         {
           loading: 'Accepting Friend Request...',
@@ -31,7 +31,10 @@ const FriendRequestCard = ({ friendRequest }) => {
         },
         { success: { duration: 5000 }, id: 'frSent' }
       );
+      console.log(res);
+      setChatrooms((chatrooms) => [res.data.newChatroom, ...chatrooms]);
       setStatus('accepted');
+      setFriendRequests((frs) => frs.filter((e) => e._id !== friendRequest._id));
     } catch (err) {
       console.log(err);
     }
@@ -49,6 +52,7 @@ const FriendRequestCard = ({ friendRequest }) => {
         { success: { duration: 5000 }, id: 'frSent' }
       );
       setStatus('declined');
+      setFriendRequests((frs) => frs.filter((e) => e._id !== friendRequest._id));
     } catch (err) {
       console.log(err);
     }
@@ -63,14 +67,20 @@ const FriendRequestCard = ({ friendRequest }) => {
           <Icon onClick={handleAccept} className="accept-icon icon" icon="ph:check-bold" />
           <Icon onClick={handleDecline} className="decline-icon icon" icon="ph:x-bold" />
         </div>
-      ) : null}
+      ) : !loading && status === 'accepted' ? (
+        <Icon className="accept-icon icon" icon="ph:check-bold" />
+      ) : (
+        <Icon className="decline-icon icon" icon="ph:x-bold" />
+      )}
       <BeatLoader loading={loading} color="var(--light)" size={5} />
     </Container>
   );
 };
 
 FriendRequestCard.propTypes = {
-  friendRequest: PropTypes.object
+  friendRequest: PropTypes.object,
+  setChatrooms: PropTypes.func,
+  setFriendRequests: PropTypes.func
 };
 
 const Container = styled.div`

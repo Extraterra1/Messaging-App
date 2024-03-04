@@ -6,14 +6,20 @@ import PropTypes from 'prop-types';
 import FriendsMenu from './FriendsMenu';
 import FriendRequestMenu from './FriendRequestMenu';
 
-const ActionsMenu = ({ friendRequests, setFriendRequests }) => {
+const ActionsMenu = ({ friendRequests, setFriendRequests, setChatrooms }) => {
   const [friendsMenuOpen, setFriendsMenuOpen] = useState(false);
   const [frMenuOpen, setFRMenuOpen] = useState(false);
 
   return (
     <>
       <FriendsMenu isOpen={friendsMenuOpen} closeModal={() => setFriendsMenuOpen(false)} />
-      <FriendRequestMenu isOpen={frMenuOpen} closeModal={() => setFRMenuOpen(false)} />
+      <FriendRequestMenu
+        isOpen={frMenuOpen}
+        closeModal={() => setFRMenuOpen(false)}
+        setChatrooms={setChatrooms}
+        friendRequests={friendRequests}
+        setFriendRequests={setFriendRequests}
+      />
       <Container onClick={(e) => e.stopPropagation()}>
         <div onClick={() => setFRMenuOpen(true)} className="friend-requests">
           <Icon icon="ph:users-fill" />
@@ -31,7 +37,8 @@ const ActionsMenu = ({ friendRequests, setFriendRequests }) => {
 
 ActionsMenu.propTypes = {
   friendRequests: PropTypes.array,
-  setFriendRequests: PropTypes.func
+  setFriendRequests: PropTypes.func,
+  setChatrooms: PropTypes.func
 };
 
 export default ActionsMenu;
