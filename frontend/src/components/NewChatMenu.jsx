@@ -3,8 +3,24 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
+import useAxios from 'axios-hooks';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
+import { Icon } from '@iconify/react';
+import { useState } from 'react';
 
 const NewChatMenu = ({ isOpen, closeModal }) => {
+  const auth = useAuthUser();
+  const authHeader = useAuthHeader();
+
+  const [participants, setParticipants] = useState([]);
+
+  const [{ data, loading }] = useAxios({
+    url: `${import.meta.env.VITE_API_URL}/users/${auth._id}/friends`,
+    method: 'GET',
+    headers: { Authorization: authHeader }
+  });
+
   return (
     <div style={{ position: 'absolute' }} onClick={(e) => e.stopPropagation()}>
       <Modal isOpen={isOpen} onRequestClose={closeModal} style={modalStyles}>
@@ -22,7 +38,7 @@ const NewChatMenu = ({ isOpen, closeModal }) => {
             >
               <Form>
                 <Input label="Title" name="title" id="title" type="text" placeholder="New Group Chat" />
-                <FriendsList />
+                <FriendsList friends={!loading && data ? data.friends : []} participants={participants} setParticipants={setParticipants} />
               </Form>
             </Formik>
           </div>
@@ -144,14 +160,70 @@ Input.propTypes = {
   name: PropTypes.string
 };
 
-const FriendsList = ({ friends }) => {
+const FriendsList = ({ friends, participants, setParticipants }) => {
+  const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+  `;
+
+  const UsersContainer = styled.div`
+    display: flex;
+    gap: 2rem;
+  `;
+
+  const User = styled.span`
+    padding: 1rem 2rem;
+    background-color: var(--dark);
+    font-size: 1.3rem;
+    color: var(--light);
+    border-radius: 1rem;
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    transition: all 0.3s;
+
+    &.selected {
+      background-color: var(--success);
+    }
+
+    & > svg {
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover {
+        transform: rotate(90deg);
+      }
+    }
+  `;
+
+  const handleClick = (user) => {
+    if (!participants.includes(user._id)) return setParticipants((participants) => [...participants, user._id]);
+    setParticipants((participants) => participants.filter((e) => e !== user._id));
+  };
+
   return (
-    <div>
+    <Container>
       <Input type="hidden" name="participants" label="Participants" />
-    </div>
+      <UsersContainer>
+        {friends.map((e) => {
+          const selected = participants.includes(e.user._id);
+          return (
+            <User key={e._id} className={selected ? 'selected' : null}>
+              {e.user.username}
+              <Icon onClick={() => handleClick(e.user)} icon={selected ? 'ph:x-bold' : 'ph:plus-bold'} />
+            </User>
+          );
+        })}
+        {friends.length === 0 ? <EmptyMessage>Nothing to see here...</EmptyMessage> : null}
+      </UsersContainer>
+    </Container>
   );
 };
 
 FriendsList.propTypes = {
-  friends: PropTypes.array
+  friends: PropTypes.array,
+  participants: PropTypes.array,
+  setParticipants: PropTypes.func
 };
