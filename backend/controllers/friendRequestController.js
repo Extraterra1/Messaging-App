@@ -77,7 +77,7 @@ exports.accept = asyncHandler(async (req, res) => {
     { new: true }
   );
 
-  return res.json({ recipient: updatedRecipient, sender: updatedSender, newChatroom });
+  return res.json({ recipient: updatedRecipient, sender: updatedSender, newChatroom: newChatroom.populate('participants') });
 });
 
 exports.decline = asyncHandler(async (req, res) => {
