@@ -61,7 +61,7 @@ const Landing = () => {
 
   return (
     <StyledMain>
-      <NewChatMenu isOpen={newChatMenuOpen} closeModal={() => setNewChatMenuOpen(false)} />
+      <NewChatMenu isOpen={newChatMenuOpen} closeModal={() => setNewChatMenuOpen(false)} setChatrooms={setChatrooms} />
       <Content>
         <Sidebar onClick={closeActionsMenu}>
           <div className="welcome-msg">

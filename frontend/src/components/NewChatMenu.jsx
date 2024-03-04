@@ -8,8 +8,9 @@ import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
-const NewChatMenu = ({ isOpen, closeModal }) => {
+const NewChatMenu = ({ isOpen, closeModal, setChatrooms }) => {
   const auth = useAuthUser();
   const authHeader = useAuthHeader();
 
@@ -21,9 +22,25 @@ const NewChatMenu = ({ isOpen, closeModal }) => {
     headers: { Authorization: authHeader }
   });
 
-  const handleSubmit = (values, { setSubmitting, setErrors }) => {
-    if (participants.length < 3) return setErrors({ participants: 'Your group chat must have at least 3 participants' });
-    console.log('xdd');
+  const [, createGroupChat] = useAxios(
+    { url: `${import.meta.env.VITE_API_URL}/chatrooms`, method: 'POST', headers: { Authorization: authHeader } },
+    { manual: true }
+  );
+
+  const handleSubmit = async (values, { setSubmitting, setErrors }) => {
+    try {
+      if (participants.length < 2) return setErrors({ participants: 'Your group chat must have at least 3 participants' });
+      const res = await toast.promise(createGroupChat({ data: { participants: [auth._id, ...participants], title: values.title } }), {
+        loading: 'Creating Chatroom...',
+        success: 'Created Group Chat!',
+        error: 'Something went wrong'
+      });
+      setChatrooms((chatrooms) => [res.data.newChatroom, ...chatrooms]);
+      closeModal();
+      setSubmitting(false);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -57,7 +74,8 @@ const NewChatMenu = ({ isOpen, closeModal }) => {
 
 NewChatMenu.propTypes = {
   isOpen: PropTypes.bool,
-  closeModal: PropTypes.func
+  closeModal: PropTypes.func,
+  setChatrooms: PropTypes.func
 };
 
 const ModalContainer = styled.div`
