@@ -4,6 +4,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import FriendsMenu from './FriendsMenu';
+import FriendRequestMenu from './FriendRequestMenu';
 
 const ActionsMenu = ({ friendRequests, setFriendRequests }) => {
   const [friendsMenuOpen, setFriendsMenuOpen] = useState(false);

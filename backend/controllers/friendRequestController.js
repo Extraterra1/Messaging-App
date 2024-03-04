@@ -41,8 +41,7 @@ exports.getPendingRequests = asyncHandler(async (req, res) => {
 
   if (req.params.id !== req.user._id.toString()) return res.status(401).json({ err: 'You are not authorized' });
 
-  const pendingFR = await FriendRequest.find({ recipient: req.user._id, status: 'pending' });
-
+  const pendingFR = await FriendRequest.find({ recipient: req.user._id, status: 'pending' }).populate('sender recipient', 'username');
   return res.json({ pendingFR });
 });
 

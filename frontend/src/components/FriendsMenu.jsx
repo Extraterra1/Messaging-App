@@ -63,9 +63,7 @@ const FriendsMenu = ({ isOpen, closeModal }) => {
 
 FriendsMenu.propTypes = {
   isOpen: PropTypes.bool,
-  closeModal: PropTypes.func,
-  item: PropTypes.object,
-  refetchPosts: PropTypes.func
+  closeModal: PropTypes.func
 };
 
 const ModalContainer = styled.div`
