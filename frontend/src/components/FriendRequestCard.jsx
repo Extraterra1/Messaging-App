@@ -31,7 +31,6 @@ const FriendRequestCard = ({ friendRequest, setChatrooms, setFriendRequests }) =
         },
         { success: { duration: 5000 }, id: 'frSent' }
       );
-      console.log(res);
       setChatrooms((chatrooms) => [res.data.newChatroom, ...chatrooms]);
       setStatus('accepted');
       setFriendRequests((frs) => frs.filter((e) => e._id !== friendRequest._id));
@@ -67,11 +66,7 @@ const FriendRequestCard = ({ friendRequest, setChatrooms, setFriendRequests }) =
           <Icon onClick={handleAccept} className="accept-icon icon" icon="ph:check-bold" />
           <Icon onClick={handleDecline} className="decline-icon icon" icon="ph:x-bold" />
         </div>
-      ) : !loading && status === 'accepted' ? (
-        <Icon className="accept-icon icon" icon="ph:check-bold" />
-      ) : (
-        <Icon className="decline-icon icon" icon="ph:x-bold" />
-      )}
+      ) : null}
       <BeatLoader loading={loading} color="var(--light)" size={5} />
     </Container>
   );
