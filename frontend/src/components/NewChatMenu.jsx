@@ -21,6 +21,11 @@ const NewChatMenu = ({ isOpen, closeModal }) => {
     headers: { Authorization: authHeader }
   });
 
+  const handleSubmit = (values, { setSubmitting, setErrors }) => {
+    if (participants.length < 3) return setErrors({ participants: 'Your group chat must have at least 3 participants' });
+    console.log('xdd');
+  };
+
   return (
     <div style={{ position: 'absolute' }} onClick={(e) => e.stopPropagation()}>
       <Modal isOpen={isOpen} onRequestClose={closeModal} style={modalStyles}>
@@ -29,16 +34,18 @@ const NewChatMenu = ({ isOpen, closeModal }) => {
           <div className="body">
             <Formik
               initialValues={{
-                title: ''
+                title: '',
+                participants: ''
               }}
               validationSchema={Yup.object({
                 title: Yup.string().required('Required')
               })}
-              onSubmit={() => console.log('xd')}
+              onSubmit={handleSubmit}
             >
-              <Form>
+              <Form style={{ display: 'flex', flexDirection: 'column' }}>
                 <Input label="Title" name="title" id="title" type="text" placeholder="New Group Chat" />
                 <FriendsList friends={!loading && data ? data.friends : []} participants={participants} setParticipants={setParticipants} />
+                <SubmitButton type="submit">Create</SubmitButton>
               </Form>
             </Formik>
           </div>
@@ -90,6 +97,12 @@ const EmptyMessage = styled.span`
   font-size: 2rem;
   color: var(--dark);
   text-align: center;
+`;
+const SubmitButton = styled.button`
+  font-size: 2rem;
+  align-self: center;
+  margin-top: 4rem;
+  background-color: var(--success);
 `;
 
 export default NewChatMenu;
@@ -161,43 +174,6 @@ Input.propTypes = {
 };
 
 const FriendsList = ({ friends, participants, setParticipants }) => {
-  const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-  `;
-
-  const UsersContainer = styled.div`
-    display: flex;
-    gap: 2rem;
-  `;
-
-  const User = styled.span`
-    padding: 1rem 2rem;
-    background-color: var(--dark);
-    font-size: 1.3rem;
-    color: var(--light);
-    border-radius: 1rem;
-
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-
-    transition: all 0.3s;
-
-    &.selected {
-      background-color: var(--success);
-    }
-
-    & > svg {
-      cursor: pointer;
-      transition: all 0.3s;
-
-      &:hover {
-        transform: rotate(90deg);
-      }
-    }
-  `;
-
   const handleClick = (user) => {
     if (!participants.includes(user._id)) return setParticipants((participants) => [...participants, user._id]);
     setParticipants((participants) => participants.filter((e) => e !== user._id));
@@ -227,3 +203,40 @@ FriendsList.propTypes = {
   participants: PropTypes.array,
   setParticipants: PropTypes.func
 };
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const UsersContainer = styled.div`
+  display: flex;
+  gap: 2rem;
+`;
+
+const User = styled.span`
+  padding: 1rem 2rem;
+  background-color: var(--dark);
+  font-size: 1.3rem;
+  color: var(--light);
+  border-radius: 1rem;
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  transition: all 0.3s;
+
+  &.selected {
+    background-color: var(--info);
+  }
+
+  & > svg {
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      transform: rotate(90deg);
+    }
+  }
+`;
