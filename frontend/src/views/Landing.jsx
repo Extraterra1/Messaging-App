@@ -43,6 +43,7 @@ const Landing = () => {
   const [chatrooms, setChatrooms] = useState([]);
   const [showingActions, setShowingActions] = useState(false);
   const [friendRequests, setFriendRequests] = useState([]);
+  const [newChatMenuOpen, setNewChatMenuOpen] = useState(false);
 
   useEffect(() => {
     if (activeChatroom !== null) setActiveChatroom(0);
