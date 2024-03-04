@@ -16,7 +16,7 @@ exports.create = [
   body('participants.*')
     .custom((value) => isValidObjectId(value))
     .withMessage('Invalid User ID'),
-  body('title', 'Title cannot be longer than 15 characters').optional().isLength({ max: 15 }),
+  body('title', 'Title cannot be longer than 45 characters').optional().isLength({ max: 45 }),
 
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
