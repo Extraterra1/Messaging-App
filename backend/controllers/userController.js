@@ -18,6 +18,16 @@ exports.getChats = asyncHandler(async (req, res) => {
   return res.json({ chatrooms, count: chatrooms.length });
 });
 
+exports.getFriends = asyncHandler(async (req, res) => {
+  if (!isValidObjectId(req.params.id)) return res.status(404).json({ err: 'User not found' });
+
+  if (!req.user._id.equals(req.params.id) && req.user.username !== 'admin') return res.status(401).json({ err: 'You need to be an admin to do that' });
+
+  const user = await User.findById(req.params.id).populate({ path: 'friends', populate: { path: 'user', select: '-password' } });
+
+  return res.json({ friends: user.friends });
+});
+
 exports.deleteFriend = asyncHandler(async (req, res) => {
   if (!isValidObjectId(req.params.id)) return res.status(404).json({ err: 'User not found' });
   if (!isValidObjectId(req.params.friendId)) return res.status(404).json({ err: 'Friend not found' });

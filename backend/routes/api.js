@@ -46,6 +46,9 @@ router.delete('/chatrooms/:id', passport.authenticate('jwt', { session: false })
 // Get User's Chatrooms
 router.get('/users/:id/chatrooms', passport.authenticate('jwt', { session: false }), userController.getChats);
 
+// Get User's Friends
+router.get('/users/:id/friends', passport.authenticate('jwt', { session: false }), userController.getFriends);
+
 // Delete Friend
 router.delete('/users/:id/friends/:friendId', passport.authenticate('jwt', { session: false }), userController.deleteFriend);
 
