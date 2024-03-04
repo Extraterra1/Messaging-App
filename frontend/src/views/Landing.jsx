@@ -11,6 +11,7 @@ import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 import UserChats from '../components/UserChats';
 import Chatroom from '../components/Chatroom';
 import ActionsMenu from '../components/ActionsMenu';
+import NewChatMenu from '../components/newChatMenu';
 
 const Landing = () => {
   const auth = useAuthUser();
@@ -60,6 +61,7 @@ const Landing = () => {
 
   return (
     <StyledMain>
+      <NewChatMenu isOpen={newChatMenuOpen} closeModal={() => setNewChatMenuOpen(false)} />
       <Content>
         <Sidebar onClick={closeActionsMenu}>
           <div className="welcome-msg">
@@ -70,7 +72,7 @@ const Landing = () => {
             <div className="chats-heading">
               <h1>Chats</h1>
               <div>
-                <Icon className="new-chat-icon icon" icon="ph:note-pencil-fill" />
+                <Icon onClick={() => setNewChatMenuOpen(true)} className="new-chat-icon icon" icon="ph:note-pencil-fill" />
                 <div className="actions-menu">
                   <Icon onClick={() => setShowingActions(!showingActions)} className="more-icon icon" icon="ph:dots-three-outline-vertical-fill" />
                   {friendRequests.length > 0 ? <span>{friendRequests.length || null}</span> : null}
