@@ -6,6 +6,8 @@ import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { ClipLoader } from 'react-spinners';
 
+import FriendRequestCard from './FriendRequestCard';
+
 const FriendRequestMenu = ({ isOpen, closeModal }) => {
   const authHeader = useAuthHeader();
   const auth = useAuthUser();
@@ -23,13 +25,7 @@ const FriendRequestMenu = ({ isOpen, closeModal }) => {
           <h1>Pending Friend Requests</h1>
           <div className="body">
             <ClipLoader cssOverride={{ margin: '0 auto', alignSelf: 'center', display: 'inline-block' }} loading={loading} color="var(--dark)" size={75} />
-            {data && !loading
-              ? data.pendingFR.map((e) => (
-                  <span key={e._id}>
-                    {e.sender.username} to {e.recipient.username}
-                  </span>
-                ))
-              : null}
+            {data && !loading ? data.pendingFR.map((e) => <FriendRequestCard key={e._id} friendRequest={e} />) : null}
           </div>
         </ModalContainer>
       </Modal>
@@ -58,6 +54,7 @@ const ModalContainer = styled.div`
     flex-grow: 1;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     width: 100%;
   }

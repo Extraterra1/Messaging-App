@@ -60,8 +60,8 @@ const FriendRequestCard = ({ friendRequest }) => {
       <span className="username">{user.username}</span>
       {!loading && status === 'pending' ? (
         <div className="actions">
-          <Icon onClick={handleAccept} className="add-friend-icon icon" icon="ph:check-bold" />
-          <Icon onClick={handleDecline} className="add-friend-icon icon" icon="ph:x-bold" />
+          <Icon onClick={handleAccept} className="accept-icon icon" icon="ph:check-bold" />
+          <Icon onClick={handleDecline} className="decline-icon icon" icon="ph:x-bold" />
         </div>
       ) : null}
       <BeatLoader loading={loading} color="var(--light)" size={5} />
@@ -89,13 +89,27 @@ const Container = styled.div`
     flex-grow: 1;
   }
 
-  & > .add-friend-icon {
-    font-size: 3rem;
-    cursor: pointer;
-    transition: all 0.3s;
+  & > .actions {
+    display: flex;
+    gap: 2rem;
+    & > .icon {
+      font-size: 3rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    & > .accept-icon {
+      color: var(--success);
 
-    &:hover {
-      color: var(--info);
+      &:hover {
+        color: var(--info);
+      }
+    }
+    & > .decline-icon {
+      color: var(--danger);
+
+      &:hover {
+        color: var(--info);
+      }
     }
   }
 
@@ -118,4 +132,4 @@ const Container = styled.div`
   }
 `;
 
-export default FriendCard;
+export default FriendRequestCard;
