@@ -30,7 +30,7 @@ const Container = styled.div`
   padding: 1rem;
   border-radius: 0.5rem;
   font-size: 1.7rem;
-  width: 18rem;
+  width: 20rem;
 
   margin-top: 5rem;
 
@@ -55,5 +55,14 @@ const Container = styled.div`
 
   & > .remove-friend {
     position: relative;
+
+    &:hover svg {
+      color: var(--danger);
+    }
+
+    & > svg {
+      font-size: 2rem;
+      transition: all 0.3s;
+    }
   }
 `;

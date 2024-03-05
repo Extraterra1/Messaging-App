@@ -20,16 +20,19 @@ const Chatroom = ({ chat, setChatrooms }) => {
   const chatLetter = getChatroomLetter(chat, auth);
   const chatTitle = getChatroomTitle(chat, auth);
 
+  const closeOptionsMenu = () => (optionsMenuOpen ? setOptionsMenuOpen(false) : null);
+
   return (
     <>
-      <ChatroomContainer>
+      <ChatroomContainer onClick={closeOptionsMenu}>
         <div className="chat-header">
           <CircleLetter>{chatLetter}</CircleLetter>
           <div className="chat-title">
             <span>{chatTitle}</span>
           </div>
-          <div className="chat-actions">
+          <div className="chat-actions" onClick={() => setOptionsMenuOpen(!optionsMenuOpen)}>
             <Icon icon="ph:dots-three-outline-vertical-fill" />
+            {optionsMenuOpen && <ChatroomOptionsMenu />}
           </div>
         </div>
         <div className="chat-body">
