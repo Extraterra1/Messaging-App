@@ -32,7 +32,7 @@ const Chatroom = ({ chat, setChatrooms }) => {
           </div>
           <div className="chat-actions" onClick={() => setOptionsMenuOpen(!optionsMenuOpen)}>
             <Icon icon="ph:dots-three-outline-vertical-fill" />
-            {optionsMenuOpen && <ChatroomOptionsMenu />}
+            {optionsMenuOpen && chat.participants.length === 2 && <ChatroomOptionsMenu />}
           </div>
         </div>
         <div className="chat-body">

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Icon } from '@iconify/react';
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const ChatroomOptionsMenu = ({ setChatrooms }) => {
