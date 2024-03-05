@@ -33,6 +33,24 @@ const Container = styled.div`
   gap: 3rem;
   padding: 2rem 0;
 
+  height: calc((100vh - 5rem) - 25rem);
+  overflow-y: auto;
+
+  &::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 12px;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #555;
+  }
+
   & > h3 {
     text-align: center;
     margin-top: 2rem;
