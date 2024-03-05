@@ -4,15 +4,18 @@ import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { Icon } from '@iconify/react';
 import getChatroomLetter from '../utils/getChatroomLetter';
 import getChatroomTitle from '../utils/getChatroomTitle';
+import { useState } from 'react';
 
 import CircleLetter from './CircleLetter';
 import ChatBubble from './ChatBubble';
 import ChatForm from './ChatForm';
+import ChatroomOptionsMenu from '../ChatroomOptionsMenu';
 
 const Chatroom = ({ chat, setChatrooms }) => {
   if (!chat) return <EmptyMessage />;
 
   const auth = useAuthUser();
+  const [optionsMenuOpen, setOptionsMenuOpen] = useState(false);
 
   const chatLetter = getChatroomLetter(chat, auth);
   const chatTitle = getChatroomTitle(chat, auth);
@@ -81,6 +84,8 @@ const ChatroomContainer = styled.div`
       border-radius: 0.5rem;
       cursor: pointer;
       transition: all 0.3s;
+
+      position: relative;
 
       &:hover {
         background-color: var(--gray);
