@@ -24,7 +24,9 @@ const ChatPreview = ({ chatroom, setActiveChatroom, chatrooms }) => {
 
   return (
     <Container onClick={handleClick}>
-      <CircleLetter>{chatLetter}</CircleLetter>
+      <div className="chat-portrait">
+        <CircleLetter>{chatLetter}</CircleLetter>
+      </div>
       <Content>
         <div className="title">{chatTitle}</div>
         <div className="last-message">{lastMessage || 'No messages here yet...'}</div>
@@ -50,6 +52,11 @@ const Container = styled.div`
 
   &:hover {
     background-color: var(--gray);
+  }
+
+  & > .chat-portrait {
+    display: flex;
+    align-items: center;
   }
 `;
 

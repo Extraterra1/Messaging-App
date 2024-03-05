@@ -81,6 +81,11 @@ const ChatroomContainer = styled.div`
 
     height: 8rem;
 
+    @media (max-width: 450px) {
+      border-left: none;
+      border-top: 2px solid black;
+    }
+
     & > .chat-title {
       flex-grow: 1;
 

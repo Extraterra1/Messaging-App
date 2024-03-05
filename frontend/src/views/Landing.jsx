@@ -99,6 +99,11 @@ const StyledMain = styled.main`
   background-color: #2ab67b;
   color: var(--light);
   height: 100vh;
+
+  @media (max-width: 450px) {
+    padding: 0;
+    height: auto;
+  }
 `;
 
 const Content = styled.div`
@@ -113,6 +118,11 @@ const Content = styled.div`
   height: calc(100vh-5rem);
 
   overflow: hidden;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+    border-radius: 0;
+  }
 `;
 
 const Sidebar = styled.div`
