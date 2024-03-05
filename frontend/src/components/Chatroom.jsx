@@ -9,9 +9,9 @@ import { useState } from 'react';
 import CircleLetter from './CircleLetter';
 import ChatBubble from './ChatBubble';
 import ChatForm from './ChatForm';
-import ChatroomOptionsMenu from '../ChatroomOptionsMenu';
+import ChatroomOptionsMenu from './ChatroomOptionsMenu';
 
-const Chatroom = ({ chat, setChatrooms }) => {
+const Chatroom = ({ chat, setChatrooms, setActiveChatroom }) => {
   if (!chat) return <EmptyMessage />;
 
   const auth = useAuthUser();
@@ -19,6 +19,8 @@ const Chatroom = ({ chat, setChatrooms }) => {
 
   const chatLetter = getChatroomLetter(chat, auth);
   const chatTitle = getChatroomTitle(chat, auth);
+
+  const friend = chat.participants.find((e) => e._id !== auth._id);
 
   const closeOptionsMenu = () => (optionsMenuOpen ? setOptionsMenuOpen(false) : null);
 
@@ -32,7 +34,15 @@ const Chatroom = ({ chat, setChatrooms }) => {
           </div>
           <div className="chat-actions" onClick={() => setOptionsMenuOpen(!optionsMenuOpen)}>
             <Icon icon="ph:dots-three-outline-vertical-fill" />
-            {optionsMenuOpen && chat.participants.length === 2 && <ChatroomOptionsMenu />}
+            {optionsMenuOpen && chat.participants.length === 2 && (
+              <ChatroomOptionsMenu
+                friend={friend}
+                setChatrooms={setChatrooms}
+                setActiveChatroom={setActiveChatroom}
+                setOptionsMenuOpen={setOptionsMenuOpen}
+                chatroom={chat}
+              />
+            )}
           </div>
         </div>
         <div className="chat-body">
@@ -48,7 +58,8 @@ const Chatroom = ({ chat, setChatrooms }) => {
 
 Chatroom.propTypes = {
   chat: PropTypes.object,
-  setChatrooms: PropTypes.func
+  setChatrooms: PropTypes.func,
+  setActiveChatroom: PropTypes.func
 };
 
 export default Chatroom;
