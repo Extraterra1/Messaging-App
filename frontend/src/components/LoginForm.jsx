@@ -14,7 +14,7 @@ const FormWrapper = styled.div`
   height: 100%;
   background-color: #3e3e3e;
 
-  @media (max-width: 450px) {
+  @media (max-width: 800px) {
     align-items: start;
     padding: 10rem 3rem;
 

@@ -81,7 +81,7 @@ const ChatroomContainer = styled.div`
 
     height: 8rem;
 
-    @media (max-width: 450px) {
+    @media (max-width: 800px) {
       border-left: none;
       border-top: 2px solid black;
     }

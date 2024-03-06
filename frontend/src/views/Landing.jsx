@@ -100,7 +100,7 @@ const StyledMain = styled.main`
   color: var(--light);
   height: 100vh;
 
-  @media (max-width: 450px) {
+  @media (max-width: 800px) {
     padding: 0;
     height: auto;
   }
