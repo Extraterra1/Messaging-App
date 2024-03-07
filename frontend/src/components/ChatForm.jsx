@@ -20,6 +20,7 @@ const ChatForm = ({ chatId, setChatrooms }) => {
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
+      console.log(values);
       const res = await sendMessage({ data: { chatroom: chatId, content: values.content } });
       setSubmitting(false);
       resetForm();
@@ -38,7 +39,6 @@ const ChatForm = ({ chatId, setChatrooms }) => {
     }
   };
 
-  //   { ...res.data, author: auth }
   return (
     <FormWrapper>
       <Formik
@@ -46,13 +46,29 @@ const ChatForm = ({ chatId, setChatrooms }) => {
           content: ''
         }}
         validationSchema={Yup.object({
-          content: Yup.string().required('Required')
+          content: Yup.string().required('Required'),
+          file: Yup.mixed()
+            .test('fileType', 'Bad Format', (value) => {
+              if (value[0]) {
+                return value[0].type === 'image/jpeg' || value[0].type === 'image/jpg' || value[0].type === 'image/png';
+              } else {
+                return true;
+              }
+            })
+            .test('fileSize', 'Too Big', (value) => {
+              if (value[0]) {
+                // 800 kb
+                return value[0].size < 800 * 1000;
+              } else {
+                return true;
+              }
+            })
         })}
         onSubmit={handleSubmit}
       >
         <Form style={formCSS}>
           <Input name="content" type="text" placeholder="Type your message..." />
-          <Input name="file" type="file" id="file" label={<Icon icon="ph:paperclip-bold" />} />
+          <FileInput name="file" type="file" id="file" label={<Icon icon="ph:paperclip-bold" />} />
           <SubmitButton type="submit">
             {loading ? (
               <BeatLoader loading={loading} cssOverride={{ display: 'block', margin: '0 auto' }} color="var(--light)" size={5} />
@@ -112,7 +128,34 @@ const Input = ({ label, ...props }) => {
   );
 };
 Input.propTypes = {
-  label: PropTypes.string,
+  label: PropTypes.any,
+  id: PropTypes.string,
+  name: PropTypes.string
+};
+const FileInput = ({ label, ...props }) => {
+  const [field, meta, helpers] = useField(props);
+
+  return (
+    <>
+      <FormGroup>
+        <label htmlFor={props.id || props.name}>{label}</label>
+        <input
+          {...field}
+          {...props}
+          value={undefined}
+          onChange={(event) => {
+            if (event.currentTarget.files) {
+              helpers.setValue(event.currentTarget.files);
+            }
+          }}
+        />
+        {meta.error && <span>{meta.error}</span>}
+      </FormGroup>
+    </>
+  );
+};
+FileInput.propTypes = {
+  label: PropTypes.any,
   id: PropTypes.string,
   name: PropTypes.string
 };
