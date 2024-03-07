@@ -1,13 +1,23 @@
 const { body, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
 const { isValidObjectId } = require('mongoose');
+const path = require('path');
 
 const Chatroom = require('../models/chatroomModel');
 const Message = require('../models/messageModel');
 
 exports.create = [
   body('content', 'Message Content is required').trim().notEmpty(),
-  body('imgUrl', 'Image must be a URL').optional().trim().isURL(),
+  body('img')
+    .optional()
+    .custom((val) => {
+      const fileExtension = path.extname(val).toLowerCase();
+      if (fileExtension !== '.jpg' && fileExtension !== '.png' && fileExtension !== '.jpeg') {
+        throw new Error('Invalid file type. Only .jpg, .png, and .jpeg are allowed');
+      }
+      // Indicates the success of this synchronous custom validator
+      return true;
+    }),
   body('chatroom', 'Chatroom ID is required')
     .trim()
     .notEmpty()
