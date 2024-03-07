@@ -52,6 +52,7 @@ const ChatForm = ({ chatId, setChatrooms }) => {
       >
         <Form style={formCSS}>
           <Input name="content" type="text" placeholder="Type your message..." />
+          <Input name="file" type="file" id="file" label={<Icon icon="ph:paperclip-bold" />} />
           <SubmitButton type="submit">
             {loading ? (
               <BeatLoader loading={loading} cssOverride={{ display: 'block', margin: '0 auto' }} color="var(--light)" size={5} />
@@ -74,7 +75,7 @@ export default ChatForm;
 
 const formCSS = {
   display: 'grid',
-  gridTemplateColumns: '1fr auto',
+  gridTemplateColumns: '1fr auto auto',
   alignItems: 'center',
   gap: '1rem'
 };
@@ -122,8 +123,30 @@ const FormGroup = styled.div`
   font-family: 'Montserrat';
   letter-spacing: 1px;
 
+  &:has(label[for='file']) {
+    font-size: 1.5rem;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    background-color: ${Color('#11273d').lighten(1.5).hex()};
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 8px;
+    padding: 0.6em 1.2em;
+
+    &:hover {
+      background-color: ${Color('#11273d').lighten(3).hex()};
+    }
+  }
+
   & label {
     font-size: 1.7rem;
+
+    &[for='file'] {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
   }
 
   & input {
@@ -137,5 +160,9 @@ const FormGroup = styled.div`
     font-weight: 400;
     font-size: 1.5rem;
     min-width: 30rem;
+
+    &[type='file'] {
+      display: none;
+    }
   }
 `;

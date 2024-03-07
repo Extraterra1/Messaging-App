@@ -119,7 +119,7 @@ const Content = styled.div`
 
   overflow: hidden;
 
-  @media (max-width: 700px) {
+  @media (max-width: 800px) {
     grid-template-columns: 1fr;
     border-radius: 0;
   }
