@@ -11,16 +11,6 @@ const Message = require('../models/messageModel');
 exports.create = [
   upload.single('file'),
   body('content', 'Message Content is required').trim().notEmpty(),
-  // body('img')
-  //   .optional()
-  //   .custom((val) => {
-  //     const fileExtension = path.extname(val.name).toLowerCase();
-  //     if (fileExtension !== '.jpg' && fileExtension !== '.png' && fileExtension !== '.jpeg') {
-  //       throw new Error('Invalid file type. Only .jpg, .png, and .jpeg are allowed');
-  //     }
-  //     // Indicates the success of this synchronous custom validator
-  //     return true;
-  //   }),
   body('chatroom', 'Chatroom ID is required')
     .trim()
     .notEmpty()
@@ -28,9 +18,14 @@ exports.create = [
     .withMessage('Invalid Chatroom'),
 
   asyncHandler(async (req, res) => {
-    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(401).json({ err: errors.array(), type: 'bodyValidation' });
+
+    // Validate File Extension
+    const fileExtension = req.file ? path.extname(req.file.originalname).toLowerCase() : null;
+    if (fileExtension && fileExtension !== '.jpg' && fileExtension !== '.png' && fileExtension !== '.jpeg') {
+      return res.status(400).json({ err: 'Wrong file format' });
+    }
 
     const chatroom = await Chatroom.findById(req.body.chatroom);
     if (!chatroom) return res.status(404).json({ err: 'Chatroom not found' });
