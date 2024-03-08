@@ -27,6 +27,9 @@ exports.create = [
       return res.status(400).json({ err: 'Wrong file format' });
     }
 
+    const fileSize = req.file ? req.file.size : null;
+    if (fileSize && fileSize > 800000) return res.status(400).json({ err: 'File too large, must be 800kb or smaller' });
+
     const chatroom = await Chatroom.findById(req.body.chatroom);
     if (!chatroom) return res.status(404).json({ err: 'Chatroom not found' });
 
