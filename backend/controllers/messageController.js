@@ -2,22 +2,25 @@ const { body, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
 const { isValidObjectId } = require('mongoose');
 const path = require('path');
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
 
 const Chatroom = require('../models/chatroomModel');
 const Message = require('../models/messageModel');
 
 exports.create = [
+  upload.single('file'),
   body('content', 'Message Content is required').trim().notEmpty(),
-  body('img')
-    .optional()
-    .custom((val) => {
-      const fileExtension = path.extname(val).toLowerCase();
-      if (fileExtension !== '.jpg' && fileExtension !== '.png' && fileExtension !== '.jpeg') {
-        throw new Error('Invalid file type. Only .jpg, .png, and .jpeg are allowed');
-      }
-      // Indicates the success of this synchronous custom validator
-      return true;
-    }),
+  // body('img')
+  //   .optional()
+  //   .custom((val) => {
+  //     const fileExtension = path.extname(val.name).toLowerCase();
+  //     if (fileExtension !== '.jpg' && fileExtension !== '.png' && fileExtension !== '.jpeg') {
+  //       throw new Error('Invalid file type. Only .jpg, .png, and .jpeg are allowed');
+  //     }
+  //     // Indicates the success of this synchronous custom validator
+  //     return true;
+  //   }),
   body('chatroom', 'Chatroom ID is required')
     .trim()
     .notEmpty()
@@ -25,6 +28,7 @@ exports.create = [
     .withMessage('Invalid Chatroom'),
 
   asyncHandler(async (req, res) => {
+    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) return res.status(401).json({ err: errors.array(), type: 'bodyValidation' });
 

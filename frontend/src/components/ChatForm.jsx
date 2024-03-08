@@ -14,14 +14,24 @@ const ChatForm = ({ chatId, setChatrooms }) => {
   const auth = useAuthUser();
 
   const [{ loading }, sendMessage] = useAxios(
-    { url: `${import.meta.env.VITE_API_URL}/messages`, method: 'POST', headers: { Authorization: authHeader } },
+    {
+      url: `${import.meta.env.VITE_API_URL}/messages`,
+      method: 'POST'
+    },
     { manual: true }
   );
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      console.log(values);
-      const res = await sendMessage({ data: { chatroom: chatId, content: values.content } });
+      const formData = new FormData();
+      if (values.file) formData.append('file', values.file[0]);
+      formData.append('chatroom', chatId);
+      formData.append('content', values.content);
+
+      const res = await sendMessage({
+        data: formData,
+        headers: { 'Content-Type': `multipart/form-data; boundary=${formData._boundary}`, Authorization: authHeader, Accept: 'application/json' }
+      });
       setSubmitting(false);
       resetForm();
       setChatrooms((chatrooms) =>
@@ -49,14 +59,14 @@ const ChatForm = ({ chatId, setChatrooms }) => {
           content: Yup.string().required('Required'),
           file: Yup.mixed()
             .test('fileType', 'Bad Format', (value) => {
-              if (value[0]) {
+              if (value && value[0]) {
                 return value[0].type === 'image/jpeg' || value[0].type === 'image/jpg' || value[0].type === 'image/png';
               } else {
                 return true;
               }
             })
             .test('fileSize', 'Too Big', (value) => {
-              if (value[0]) {
+              if (value && value[0]) {
                 // 800 kb
                 return value[0].size < 800 * 1000;
               } else {
