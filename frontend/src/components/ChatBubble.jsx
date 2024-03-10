@@ -13,6 +13,7 @@ const ChatBubble = ({ message, direction }) => {
     );
   return (
     <Bubble>
+      {message.imgUrl && <img src={message.imgUrl} />}
       {message.content}
       <span>{moment(message.createdAt).format('HH:mm')}</span>
     </Bubble>
@@ -54,6 +55,11 @@ const Bubble = styled.div`
   color: #fff;
 
   position: relative;
+
+  & > img {
+    width: 100%;
+    border-radius: 0.5rem;
+  }
 
   & > span {
     position: absolute;
