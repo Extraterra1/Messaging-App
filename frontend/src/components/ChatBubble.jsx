@@ -2,18 +2,29 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Color from 'color';
 import moment from 'moment';
+import Zoom from 'react-medium-image-zoom';
+import 'react-medium-image-zoom/dist/styles.css';
 
 const ChatBubble = ({ message, direction }) => {
   if (direction === 'left')
     return (
       <Bubble $left>
+        {message.imgUrl && (
+          <Zoom>
+            <img className="bubble-img" src={message.imgUrl} />
+          </Zoom>
+        )}
         {message.content}
         <span>{moment(message.createdAt).format('HH:mm')}</span>
       </Bubble>
     );
   return (
     <Bubble>
-      {message.imgUrl && <img src={message.imgUrl} />}
+      {message.imgUrl && (
+        <Zoom>
+          <img className="bubble-img" src={message.imgUrl} />
+        </Zoom>
+      )}
       {message.content}
       <span>{moment(message.createdAt).format('HH:mm')}</span>
     </Bubble>
@@ -56,7 +67,7 @@ const Bubble = styled.div`
 
   position: relative;
 
-  & > img {
+  & img.bubble-img {
     width: 100%;
     border-radius: 0.5rem;
   }
