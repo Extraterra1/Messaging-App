@@ -10,11 +10,11 @@ Deployed on [Netlify](https://messaging-app-odin.netlify.app/)
 
 ## Table of Contents:
 
-- [Installation](https://chat.openai.com/c/95549d74-133d-46ed-a153-12eae2ea4ddf#installation)
-- [Usage](https://chat.openai.com/c/95549d74-133d-46ed-a153-12eae2ea4ddf#usage)
-- [Features](https://chat.openai.com/c/95549d74-133d-46ed-a153-12eae2ea4ddf#features)
-- [Contributing](https://chat.openai.com/c/95549d74-133d-46ed-a153-12eae2ea4ddf#contributing)
-- [License](https://chat.openai.com/c/95549d74-133d-46ed-a153-12eae2ea4ddf#license)
+- [Installation](https://github.com/Extraterra1/Messaging-App#installation)
+- [Usage](https://github.com/Extraterra1/Messaging-App#usage)
+- [Features](https://github.com/Extraterra1/Messaging-App#features)
+- [Contributing](https://github.com/Extraterra1/Messaging-App#contributing)
+- [License](https://github.com/Extraterra1/Messaging-App#license)
 
 ## Installation:
 
