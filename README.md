@@ -4,6 +4,10 @@
 
 This messaging app project is built as part of The Odin Project curriculum. It utilizes React for the frontend, Express for the backend, and MongoDB as the database. The app provides users with the ability to add friends, create group chats, and upload pictures to enhance communication.
 
+Deployed on [Netlify](https://messaging-app-odin.netlify.app/)
+
+![website snapshot](https://raw.githubusercontent.com/Extraterra1/Messaging-App/main/website-snapshot.png)
+
 ## Table of Contents:
 
 - [Installation](https://chat.openai.com/c/95549d74-133d-46ed-a153-12eae2ea4ddf#installation)
