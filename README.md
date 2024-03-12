@@ -13,8 +13,6 @@ Deployed on [Netlify](https://messaging-app-odin.netlify.app/)
 - [Installation](https://github.com/Extraterra1/Messaging-App#installation)
 - [Usage](https://github.com/Extraterra1/Messaging-App#usage)
 - [Features](https://github.com/Extraterra1/Messaging-App#features)
-- [Contributing](https://github.com/Extraterra1/Messaging-App#contributing)
-- [License](https://github.com/Extraterra1/Messaging-App#license)
 
 ## Installation:
 
