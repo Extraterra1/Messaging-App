@@ -76,6 +76,13 @@ const Bubble = styled.div`
     border-radius: 0.5rem;
   }
 
+  & > span.username {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+  }
+
   & > span.timestamp {
     position: absolute;
     bottom: 0;
