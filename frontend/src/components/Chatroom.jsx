@@ -47,7 +47,7 @@ const Chatroom = ({ chat, setChatrooms, setActiveChatroom }) => {
         </div>
         <div className="chat-body">
           {chat.messages.map((e) => (
-            <ChatBubble direction={e.author._id.toString() === auth._id.toString() ? 'right' : 'left'} key={e._id} message={e} />
+            <ChatBubble chatroom={chat} direction={e.author._id.toString() === auth._id.toString() ? 'right' : 'left'} key={e._id} message={e} />
           ))}
         </div>
         <ChatForm setChatrooms={setChatrooms} chatId={chat._id.toString()} />

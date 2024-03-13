@@ -5,17 +5,18 @@ import moment from 'moment';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 
-const ChatBubble = ({ message, direction }) => {
+const ChatBubble = ({ chatroom, message, direction }) => {
   if (direction === 'left')
     return (
       <Bubble $left>
+        {chatroom.participants.length > 2 && <span className="username">{message.author.username}</span>}
         {message.imgUrl && (
           <Zoom>
             <img className="bubble-img" src={message.imgUrl} />
           </Zoom>
         )}
         {message.content}
-        <span>{moment(message.createdAt).format('HH:mm')}</span>
+        <span className="timestamp">{moment(message.createdAt).format('HH:mm')}</span>
       </Bubble>
     );
   return (
@@ -26,13 +27,14 @@ const ChatBubble = ({ message, direction }) => {
         </Zoom>
       )}
       {message.content}
-      <span>{moment(message.createdAt).format('HH:mm')}</span>
+      <span className="timestamp">{moment(message.createdAt).format('HH:mm')}</span>
     </Bubble>
   );
 };
 
 ChatBubble.propTypes = {
   message: PropTypes.object,
+  chatroom: PropTypes.object,
   direction: PropTypes.string
 };
 
@@ -66,13 +68,15 @@ const Bubble = styled.div`
   color: #fff;
 
   position: relative;
+  display: flex;
+  flex-direction: column;
 
   & img.bubble-img {
     width: 100%;
     border-radius: 0.5rem;
   }
 
-  & > span {
+  & > span.timestamp {
     position: absolute;
     bottom: 0;
     right: 0.8rem;
